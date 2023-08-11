@@ -1,10 +1,9 @@
 package cwb.content.model.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -79,12 +78,14 @@ public class CourseBase implements Serializable {
     /**
      * 创建时间
      */
-    private Date createDate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime createDate;
 
     /**
      * 修改时间
      */
-    private Date changeDate;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime changeDate;
 
     /**
      * 创建人
