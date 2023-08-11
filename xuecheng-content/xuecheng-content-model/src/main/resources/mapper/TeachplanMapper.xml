@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cwb.content.mapper.TeachplanMapper">
+
+    <resultMap id="BaseResultMap" type="cwb.content.model.domain.Teachplan">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="pname" column="pname" jdbcType="VARCHAR"/>
+            <result property="parentid" column="parentid" jdbcType="BIGINT"/>
+            <result property="grade" column="grade" jdbcType="SMALLINT"/>
+            <result property="mediaType" column="media_type" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="timelength" column="timelength" jdbcType="VARCHAR"/>
+            <result property="orderby" column="orderby" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="BIGINT"/>
+            <result property="coursePubId" column="course_pub_id" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="isPreview" column="is_preview" jdbcType="CHAR"/>
+            <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            <result property="changeDate" column="change_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pname,parentid,
+        grade,media_type,start_time,
+        end_time,description,timelength,
+        orderby,course_id,course_pub_id,
+        status,is_preview,create_date,
+        change_date
+    </sql>
+</mapper>

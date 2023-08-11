@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cwb.content.mapper.CourseAuditMapper">
+
+    <resultMap id="BaseResultMap" type="cwb.content.model.domain.CourseAudit">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="courseId" column="course_id" jdbcType="BIGINT"/>
+            <result property="auditMind" column="audit_mind" jdbcType="VARCHAR"/>
+            <result property="auditStatus" column="audit_status" jdbcType="VARCHAR"/>
+            <result property="auditPeople" column="audit_people" jdbcType="VARCHAR"/>
+            <result property="auditDate" column="audit_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,course_id,audit_mind,
+        audit_status,audit_people,audit_date
+    </sql>
+</mapper>
