@@ -22,6 +22,6 @@ public class QueryCourseParamsDto {
     private String courseName;
     //发布状态
     @ApiModelProperty("发布状态")
-    private String publishStatus;
+    private String status;
 
 }

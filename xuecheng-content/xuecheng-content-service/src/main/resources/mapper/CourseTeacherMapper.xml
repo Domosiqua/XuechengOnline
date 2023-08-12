@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cwb.content.mapper.CourseTeacherMapper">
+<mapper namespace="com.cwb.content.mapper.CourseTeacherMapper">
 
     <resultMap id="BaseResultMap" type="cwb.content.model.domain.CourseTeacher">
             <id property="id" column="id" jdbcType="BIGINT"/>
