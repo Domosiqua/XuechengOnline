@@ -2,6 +2,9 @@ package com.cwb.content.service;
 
 import cwb.content.model.domain.CourseCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import cwb.content.model.dto.CourseCategoryTreeDto;
+
+import java.util.List;
 
 /**
 * @author admin
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CourseCategoryService extends IService<CourseCategory> {
 
+    List<CourseCategoryTreeDto> queryTreeNodes(String id);
 }
