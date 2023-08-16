@@ -15,6 +15,7 @@ import java.util.List;
 * @Entity generator.domain.CourseBase
 */
 @Mapper
+@Component
 public interface CourseBaseMapper extends BaseMapper<CourseBase> {
     public List<CourseCategoryTreeDto> seleceTreeNode(String id);
 }

@@ -25,8 +25,6 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     public List<Dictionary> queryAll() {
 
         List<Dictionary> list = this.list();
-
-
         return list;
     }
 
