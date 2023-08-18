@@ -27,10 +27,11 @@ public class CourseBaseInfoController {
 
     @ApiOperation("课程查询接口")
     @PostMapping("/list")
-    public PageResult<CourseBase> list(PageParams pageParams, @RequestBody QueryCourseParamsDto queryCourseParams){
+    public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams){
         PageResult<CourseBase> pageResult=service.getPageConditionList(pageParams,queryCourseParams);
         return pageResult;
     }
+    @ApiOperation("新增课程信息")
     @PostMapping
     public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
         Long companyId = 1232141425L;

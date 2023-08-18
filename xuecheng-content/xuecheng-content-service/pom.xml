@@ -25,6 +25,7 @@
             <scope>runtime</scope>
         </dependency>
 
+
         <!-- mybatis plus的依赖 -->
         <dependency>
             <groupId>com.baomidou</groupId>

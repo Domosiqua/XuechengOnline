@@ -13,7 +13,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.cwb </groupId>
+            <groupId>com.cwb</groupId>
+            <artifactId>xuecheng-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cwb</groupId>
             <artifactId>xuecheng-content-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -60,7 +65,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
-
         </dependency>
 
     </dependencies>
