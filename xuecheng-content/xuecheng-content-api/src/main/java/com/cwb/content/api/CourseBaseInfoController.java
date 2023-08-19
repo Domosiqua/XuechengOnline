@@ -1,5 +1,6 @@
 package com.cwb.content.api;
 
+import com.cwb.base.exception.ValidationGroups;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import cwb.content.model.domain.CourseBase;
@@ -9,10 +10,8 @@ import cwb.content.model.dto.QueryCourseParamsDto;
 import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author CWB
@@ -33,9 +32,15 @@ public class CourseBaseInfoController {
     }
     @ApiOperation("新增课程信息")
     @PostMapping
-    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
+    public CourseBaseInfoDto createCourseBase(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto){
         Long companyId = 1232141425L;
         CourseBaseInfoDto ret = service.createCourseBase(companyId,addCourseDto);
+        return ret;
+    }
+    @ApiOperation("查询课程信息")
+    @GetMapping("/{id}")
+    public CourseBase GetByID(@PathVariable("id") Long id){
+        CourseBase ret = service.getById(id);
         return ret;
     }
 

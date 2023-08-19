@@ -71,39 +71,38 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
     @Override
     @Transactional
     public CourseBaseInfoDto createCourseBase(Long companyId,AddCourseDto dto) {
-        //合法性校验
-        if (StringUtils.isBlank(dto.getName())) {
-            XcException.cast("课程名称为空");
-
-        }
-
-        if (StringUtils.isBlank(dto.getMt())) {
-            XcException.cast("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(dto.getSt())) {
-            XcException.cast("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(dto.getGrade())) {
-
-            XcException.cast("课程等级为空");
-        }
-
-        if (StringUtils.isBlank(dto.getTeachmode())) {
-
-            XcException.cast("教育模式为空");
-        }
-
-        if (StringUtils.isBlank(dto.getUsers())) {
-
-            XcException.cast("适应人群为空");
-        }
-
-        if (StringUtils.isBlank(dto.getCharge())) {
-
-            XcException.cast("收费规则为空");
-        }
+//        //合法性校验
+//        if (StringUtils.isBlank(dto.getName())) {
+//            XcException.cast("课程名称为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getMt())) {
+//            XcException.cast("课程分类为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getSt())) {
+//            XcException.cast("课程分类为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getGrade())) {
+//
+//            XcException.cast("课程等级为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getTeachmode())) {
+//
+//            XcException.cast("教育模式为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getUsers())) {
+//
+//            XcException.cast("适应人群为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getCharge())) {
+//
+//            XcException.cast("收费规则为空");
+//        }
         //新增对象
         CourseBase courseBaseNew = new CourseBase();
         //将填写的课程信息赋值给新增对象
