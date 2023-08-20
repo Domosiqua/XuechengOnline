@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -100,6 +102,7 @@ public class CourseBase implements Serializable {
     /**
      * 审核状态
      */
+
     private String auditStatus;
 
     /**

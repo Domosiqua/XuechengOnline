@@ -3,12 +3,16 @@ package com.cwb.content.api;
 import com.cwb.base.exception.ValidationGroups;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
+import com.cwb.content.service.CourseMarketService;
 import cwb.content.model.domain.CourseBase;
+import cwb.content.model.domain.CourseMarket;
 import cwb.content.model.dto.AddCourseDto;
 import cwb.content.model.dto.CourseBaseInfoDto;
+import cwb.content.model.dto.EditCourseDto;
 import cwb.content.model.dto.QueryCourseParamsDto;
 import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 public class CourseBaseInfoController {
     @Autowired
     CourseBaseService service;
+    @Autowired
+    CourseMarketService marketService;
 
     @ApiOperation("课程查询接口")
     @PostMapping("/list")
@@ -32,15 +38,23 @@ public class CourseBaseInfoController {
     }
     @ApiOperation("新增课程信息")
     @PostMapping
-    public CourseBaseInfoDto createCourseBase(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto){
+    public CourseBaseInfoDto createCourse(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto){
         Long companyId = 1232141425L;
         CourseBaseInfoDto ret = service.createCourseBase(companyId,addCourseDto);
         return ret;
     }
     @ApiOperation("查询课程信息")
     @GetMapping("/{id}")
-    public CourseBase GetByID(@PathVariable("id") Long id){
-        CourseBase ret = service.getById(id);
+    public CourseBaseInfoDto GetByID(@PathVariable("id") Long id){
+
+        return service.getCourseBaseInfo(id);
+    }
+    @ApiOperation("修改课程信息")
+    @PutMapping
+    public CourseBaseInfoDto updateCourse(@RequestBody @Validated(ValidationGroups.Update.class) EditCourseDto dto){
+        Long companyId = 1232141425L;
+        CourseBaseInfoDto ret = service.updateCourse(companyId,dto);
+
         return ret;
     }
 

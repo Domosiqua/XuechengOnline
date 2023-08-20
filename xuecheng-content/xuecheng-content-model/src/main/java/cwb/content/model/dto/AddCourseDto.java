@@ -23,7 +23,7 @@ public class AddCourseDto {
     private String name;
 
     @NotEmpty(message = "适用人群不能为空",groups = {ValidationGroups.Insert.class,ValidationGroups.Update.class})
-    @Size(message = "适用人群内容过少",min = 10,groups = {ValidationGroups.Insert.class,ValidationGroups.Update.class})
+    @Size(message = "适用人群内容过少",min = 2,groups = {ValidationGroups.Insert.class,ValidationGroups.Update.class})
     @ApiModelProperty(value = "适用人群", required = true)
     private String users;
 

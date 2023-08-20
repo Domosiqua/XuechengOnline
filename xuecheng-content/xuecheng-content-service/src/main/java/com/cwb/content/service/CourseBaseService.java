@@ -6,6 +6,7 @@ import cwb.content.model.domain.CourseBase;
 import com.baomidou.mybatisplus.extension.service.IService;
 import cwb.content.model.dto.AddCourseDto;
 import cwb.content.model.dto.CourseBaseInfoDto;
+import cwb.content.model.dto.EditCourseDto;
 import cwb.content.model.dto.QueryCourseParamsDto;
 
 /**
@@ -18,4 +19,8 @@ public interface CourseBaseService extends IService<CourseBase> {
     PageResult<CourseBase> getPageConditionList(PageParams pageParams, QueryCourseParamsDto queryCourseParams);
 
     CourseBaseInfoDto createCourseBase(Long companyid,AddCourseDto addCourseDto);
+
+    CourseBaseInfoDto updateCourse(Long companyId,EditCourseDto addCourseDto);
+
+    CourseBaseInfoDto getCourseBaseInfo(Long id);
 }

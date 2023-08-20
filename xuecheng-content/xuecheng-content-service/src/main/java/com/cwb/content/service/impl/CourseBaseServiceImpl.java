@@ -15,6 +15,7 @@ import cwb.content.model.domain.CourseCategory;
 import cwb.content.model.domain.CourseMarket;
 import cwb.content.model.dto.AddCourseDto;
 import cwb.content.model.dto.CourseBaseInfoDto;
+import cwb.content.model.dto.EditCourseDto;
 import cwb.content.model.dto.QueryCourseParamsDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -135,7 +136,39 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
 
     }
 
-    private CourseBaseInfoDto getCourseBaseInfo(Long courseId) {
+    @Override
+    @Transactional
+    public CourseBaseInfoDto updateCourse(Long companyId,EditCourseDto dto) {
+        Long courseId = dto.getId();
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if(courseBase==null){
+            XcException.cast("课程不存在");
+        }
+        //校验本机构只能修改本机构的课程
+        if(!courseBase.getCompanyId().equals(companyId)){
+            XcException.cast("本机构只能修改本机构的课程");
+        }
+
+
+        BeanUtils.copyProperties(dto,courseBase);
+        courseBase.setChangeDate(LocalDateTime.now());
+        courseBase.setAuditStatus("202002");
+        //设置发布状态
+        courseBase.setStatus("203001");
+        boolean update = this.updateById(courseBase);
+        if(!update){
+            XcException.cast("更新课程基本信息失败");
+        }
+        CourseMarket courseMarketNew = new CourseMarket();
+        BeanUtils.copyProperties(dto,courseMarketNew);
+        int i = saveCourseMarket(courseMarketNew);
+        if(i<=0){
+            XcException.cast("保存课程营销信息失败");
+        }
+        return getCourseBaseInfo(dto.getId());
+    }
+
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId) {
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         if(courseBase == null){
             return null;
