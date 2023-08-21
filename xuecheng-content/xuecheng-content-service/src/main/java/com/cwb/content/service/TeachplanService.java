@@ -2,6 +2,7 @@ package com.cwb.content.service;
 
 import cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.extension.service.IService;
+import cwb.content.model.dto.SaveTeachplanDto;
 import cwb.content.model.dto.TeachplanDto;
 
 import java.util.List;
@@ -14,4 +15,10 @@ import java.util.List;
 public interface TeachplanService extends IService<Teachplan> {
 
     List<TeachplanDto> getTreeNodes(Long courseId);
+
+    void saveTeachplan(SaveTeachplanDto teachplan);
+
+
+
+    void deleteTeachplan(Long id);
 }
