@@ -163,7 +163,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         BeanUtils.copyProperties(dto,courseMarketNew);
         int i = saveCourseMarket(courseMarketNew);
         if(i<=0){
-            XcException.cast("保存课程营销信息失败");
+            XcException.cast("更新课程营销信息失败");
         }
         return getCourseBaseInfo(dto.getId());
     }

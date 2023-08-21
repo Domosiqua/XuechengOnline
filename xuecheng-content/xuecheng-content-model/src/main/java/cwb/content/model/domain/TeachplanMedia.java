@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="teachplan_media")
 @Data
+@ToString
 public class TeachplanMedia implements Serializable {
     /**
      * 主键
@@ -114,4 +116,5 @@ public class TeachplanMedia implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
 }

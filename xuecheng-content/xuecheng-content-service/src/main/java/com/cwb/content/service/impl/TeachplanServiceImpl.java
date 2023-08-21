@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.content.mapper.TeachplanMapper;
 import cwb.content.model.domain.Teachplan;
 import com.cwb.content.service.TeachplanService;
+import cwb.content.model.dto.TeachplanDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author admin
@@ -15,6 +19,13 @@ import org.springframework.stereotype.Service;
 public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan>
     implements TeachplanService{
 
+    @Autowired
+    TeachplanMapper mapper;
+
+    @Override
+    public List<TeachplanDto> getTreeNodes(Long courseId) {
+        return mapper.selectTreeNodes(courseId);
+    }
 }
 
 
