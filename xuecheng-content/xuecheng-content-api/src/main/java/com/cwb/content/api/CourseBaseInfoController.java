@@ -54,8 +54,13 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto updateCourse(@RequestBody @Validated(ValidationGroups.Update.class) EditCourseDto dto){
         Long companyId = 1232141425L;
         CourseBaseInfoDto ret = service.updateCourse(companyId,dto);
-
         return ret;
+    }
+    @ApiOperation("修改课程信息")
+    @DeleteMapping("/{courseId}")
+    public void deleteCourse(@PathVariable Long courseId){
+       service.deleteCourseByid(courseId);
+       return;
     }
 
 }

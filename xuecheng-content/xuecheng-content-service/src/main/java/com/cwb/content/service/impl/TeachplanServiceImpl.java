@@ -103,10 +103,9 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan
     }
 
     private int getTeachplanCount(Long courseId, Long parentid) {
-        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Teachplan::getCourseId,courseId);
-        queryWrapper.eq(Teachplan::getParentid,parentid);
-        Integer count = mapper.selectCount(queryWrapper);
+        Integer count = mapper.getMaxOrderby(courseId,parentid);
+        if (count==null)
+            return 0;
         return count;
     }
     public boolean isHaveChild(Long id){

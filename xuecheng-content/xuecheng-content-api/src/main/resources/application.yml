@@ -11,6 +11,7 @@ spring:
     url: jdbc:mysql://192.168.88.128:3306/xc-content?serverTimezone=UTC&userUnicode=true&useSSL=false&
     username: root
     password: cwb
+
 # 日志文件配置路径
 logging:
   config: classpath:log4j2-dev.xml
@@ -20,3 +21,8 @@ swagger:
   base-package: com.cwb.content
   enabled: true
   version: 1.0.0
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-fill: field-fill  # 启用插入填充策略
+      update-fill: field-fill  # 启用更新填充策略

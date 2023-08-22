@@ -1,4 +1,4 @@
-package com.cwb.content;
+package com.cwb;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

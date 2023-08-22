@@ -6,13 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.base.exception.XcException;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
-import com.cwb.content.mapper.CourseBaseMapper;
-import com.cwb.content.mapper.CourseCategoryMapper;
-import com.cwb.content.mapper.CourseMarketMapper;
+import com.cwb.content.mapper.*;
 import com.cwb.content.service.CourseBaseService;
-import cwb.content.model.domain.CourseBase;
-import cwb.content.model.domain.CourseCategory;
-import cwb.content.model.domain.CourseMarket;
+import cwb.content.model.domain.*;
 import cwb.content.model.dto.AddCourseDto;
 import cwb.content.model.dto.CourseBaseInfoDto;
 import cwb.content.model.dto.EditCourseDto;
@@ -41,11 +37,17 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
     CourseMarketMapper courseMarketMapper;
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+    @Autowired
+    TeachplanMapper teachplanMapper;
+    @Autowired
+    TeachplanMediaMapper teachplanMediaMapper;
+    @Autowired
+    CourseTeacherMapper courseTeacherMapper;
+
 
 
     @Override
     public PageResult<CourseBase> getPageConditionList(PageParams pageParams, QueryCourseParamsDto queryCourseParams) {
-
         //测试查询接口
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
         //根据课程名称模糊查询  name like '%名称%'
@@ -72,38 +74,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
     @Override
     @Transactional
     public CourseBaseInfoDto createCourseBase(Long companyId,AddCourseDto dto) {
-//        //合法性校验
-//        if (StringUtils.isBlank(dto.getName())) {
-//            XcException.cast("课程名称为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getMt())) {
-//            XcException.cast("课程分类为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getSt())) {
-//            XcException.cast("课程分类为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getGrade())) {
-//
-//            XcException.cast("课程等级为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getTeachmode())) {
-//
-//            XcException.cast("教育模式为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getUsers())) {
-//
-//            XcException.cast("适应人群为空");
-//        }
-//
-//        if (StringUtils.isBlank(dto.getCharge())) {
-//
-//            XcException.cast("收费规则为空");
-//        }
+
         //新增对象
         CourseBase courseBaseNew = new CourseBase();
         //将填写的课程信息赋值给新增对象
@@ -187,7 +158,21 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         courseBaseInfoDto.setMtName(courseCategoryByMt.getName());
         return courseBaseInfoDto;
     }
-    
+
+    @Override
+    @Transactional
+    public void deleteCourseByid(Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (!courseBase.getAuditStatus().equals("202002"))
+            XcException.cast("只能删除未发布课程");
+        courseBaseMapper.deleteById(courseId);
+        courseMarketMapper.deleteById(courseId);
+        teachplanMapper.delete(new LambdaQueryWrapper<Teachplan>().eq(Teachplan::getCourseId,courseId));
+        courseTeacherMapper.delete(new LambdaQueryWrapper<CourseTeacher>().eq(CourseTeacher::getCourseId,courseId));
+        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getCourseId,courseId));
+        return;
+    }
+
     private int saveCourseMarket(CourseMarket courseMarketNew) {
         //收费规则
         String charge = courseMarketNew.getCharge();

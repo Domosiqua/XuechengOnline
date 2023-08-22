@@ -113,6 +113,9 @@
     <select id="getnext" resultType="cwb.content.model.domain.Teachplan" >
         SELECT * FROM teachplan WHERE orderby &gt; #{orderby} and course_id=#{courseId} AND parentid=#{parentid} ORDER BY orderby ASC LIMIT 1
     </select>
+    <select id="getMaxOrderby" resultType="java.lang.Integer">
+        SELECT MAX(orderby) FROM teachplan WHERE parentid=#{parentid} AND course_id=#{courseId}
+    </select>
 
 
 </mapper>

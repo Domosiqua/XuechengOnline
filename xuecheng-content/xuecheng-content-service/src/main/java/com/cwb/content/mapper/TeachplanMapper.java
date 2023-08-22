@@ -3,6 +3,7 @@ package com.cwb.content.mapper;
 import cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import cwb.content.model.dto.TeachplanDto;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,8 @@ public interface TeachplanMapper extends BaseMapper<Teachplan> {
     Teachplan getlast(@Param("orderby")Integer orderby,@Param("parentid") Long parentid, @Param("courseId")Long courseId);
 
     Teachplan getnext(@Param("orderby")Integer orderby, @Param("parentid")Long parentid, @Param("courseId")Long courseId);
+
+    Integer getMaxOrderby(@Param("parentid")Long parentid, @Param("courseId")Long courseId);
 }
 
 
