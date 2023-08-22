@@ -107,6 +107,12 @@
         order by one.orderby,
                  two.orderby
     </select>
+    <select id="getlast" resultType="cwb.content.model.domain.Teachplan" >
+        SELECT * FROM teachplan WHERE orderby &lt; #{orderby} and course_id=#{courseId} AND parentid=#{parentid} ORDER BY orderby DESC LIMIT 1
+    </select>
+    <select id="getnext" resultType="cwb.content.model.domain.Teachplan" >
+        SELECT * FROM teachplan WHERE orderby &gt; #{orderby} and course_id=#{courseId} AND parentid=#{parentid} ORDER BY orderby ASC LIMIT 1
+    </select>
 
 
 </mapper>

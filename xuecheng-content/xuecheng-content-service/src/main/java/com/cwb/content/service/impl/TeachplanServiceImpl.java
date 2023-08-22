@@ -72,6 +72,36 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan
 
     }
 
+    @Override
+    public void moveup(Long id) {
+        Teachplan byId = this.getById(id);
+        Teachplan last = mapper.getlast(byId.getOrderby(),byId.getParentid(),byId.getCourseId());
+        if(last==null) {
+            XcException.cast("该课程已经为最先 无法上移");
+        }else{
+            int tmp= last.getOrderby();
+            last.setOrderby(byId.getOrderby());
+            byId.setOrderby(tmp);
+            mapper.updateById(last);
+            mapper.updateById(byId);
+        }
+    }
+
+    @Override
+    public void movedown(Long id) {
+        Teachplan byId = this.getById(id);
+        Teachplan last = mapper.getnext(byId.getOrderby(),byId.getParentid(),byId.getCourseId());
+        if(last==null) {
+            XcException.cast("该课程已经为最后 无法下移");
+        }else{
+            int tmp= last.getOrderby();
+            last.setOrderby(byId.getOrderby());
+            byId.setOrderby(tmp);
+            mapper.updateById(last);
+            mapper.updateById(byId);
+        }
+    }
+
     private int getTeachplanCount(Long courseId, Long parentid) {
         LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Teachplan::getCourseId,courseId);

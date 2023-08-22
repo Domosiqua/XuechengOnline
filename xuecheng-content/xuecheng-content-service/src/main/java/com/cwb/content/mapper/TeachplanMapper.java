@@ -4,6 +4,7 @@ import cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import cwb.content.model.dto.TeachplanDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +20,10 @@ import java.util.List;
 public interface TeachplanMapper extends BaseMapper<Teachplan> {
 
     List<TeachplanDto> selectTreeNodes(long courseId);
+
+    Teachplan getlast(@Param("orderby")Integer orderby,@Param("parentid") Long parentid, @Param("courseId")Long courseId);
+
+    Teachplan getnext(@Param("orderby")Integer orderby, @Param("parentid")Long parentid, @Param("courseId")Long courseId);
 }
 
 
