@@ -188,6 +188,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         //根据id从课程营销表查询
         CourseMarket courseMarketObj = courseMarketMapper.selectById(courseMarketNew.getId());
         if(courseMarketObj == null){
+
             return courseMarketMapper.insert(courseMarketNew);
         }else {
             BeanUtils.copyProperties(courseMarketNew, courseMarketObj);
