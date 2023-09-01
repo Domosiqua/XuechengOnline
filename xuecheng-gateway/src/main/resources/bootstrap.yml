@@ -1,0 +1,21 @@
+#微服务配置
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 192.168.88.128:8848
+      discovery:
+        namespace: dev
+        group: xuecheng-project
+      config:
+        namespace: dev
+        group: xuecheng-project
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: xuecheng-common
+            refresh: true
+  profiles:
+    active: dev

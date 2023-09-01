@@ -51,10 +51,13 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         //测试查询接口
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
         //根据课程名称模糊查询  name like '%名称%'
-        queryWrapper.like(StringUtils.isNotEmpty(queryCourseParams.getCourseName()),CourseBase::getName,queryCourseParams.getCourseName());
-        //根据课程审核状态
-        queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParams.getAuditStatus()),CourseBase::getAuditStatus,queryCourseParams.getAuditStatus());
-        queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParams.getStatus()),CourseBase::getStatus,queryCourseParams.getStatus());
+        if(queryCourseParams!=null){
+            queryWrapper.like(StringUtils.isNotEmpty(queryCourseParams.getCourseName()),CourseBase::getName,queryCourseParams.getCourseName());
+            //根据课程审核状态
+            queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParams.getAuditStatus()),CourseBase::getAuditStatus,queryCourseParams.getAuditStatus());
+            queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParams.getStatus()),CourseBase::getStatus,queryCourseParams.getStatus());
+
+        }
 
         Page<CourseBase> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
 
