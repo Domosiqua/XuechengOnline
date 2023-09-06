@@ -35,7 +35,7 @@ public class test {
         minioClient.uploadObject(
                 UploadObjectArgs.builder()
                         .bucket("testbucket")
-                        .object("001/ys.mp4")
+                        .object("001/yx.mp4")
                         .filename("C:\\Users\\admin\\Videos\\原神？启动！.mp4")
                         .contentType(mimetype)
                         .build());
@@ -58,8 +58,13 @@ public class test {
         FilterInputStream inputStream = minioClient.getObject(args);
         FileOutputStream outputStream = new FileOutputStream(new File("D:\\jjh.jpg"));
         IOUtils.copy(inputStream,outputStream);
-
-
-
+    }
+    @Test
+    public void  getMimeType() {
+        ContentInfo extensionMatch = ContentInfoUtil.findExtensionMatch("qewqas.avi");
+        String mimetype="application/octet-stream";
+        if (extensionMatch!=null)
+            mimetype=extensionMatch.getMimeType();
+        System.out.println(mimetype);
     }
 }

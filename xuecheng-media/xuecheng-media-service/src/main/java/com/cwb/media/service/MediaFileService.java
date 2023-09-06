@@ -3,6 +3,8 @@ package com.cwb.media.service;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import com.cwb.media.model.dto.QueryMediaParamsDto;
+import com.cwb.media.model.dto.UploadFileParamsDto;
+import com.cwb.media.model.dto.UploadFileResultDto;
 import com.cwb.media.model.po.MediaFiles;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,4 +25,7 @@ public interface MediaFileService {
   PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
 
+    UploadFileResultDto uploadCoursefile();
+
+    UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath);
 }
