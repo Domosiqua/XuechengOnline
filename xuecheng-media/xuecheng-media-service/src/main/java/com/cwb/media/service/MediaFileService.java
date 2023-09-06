@@ -25,7 +25,7 @@ public interface MediaFileService {
   PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
 
-    UploadFileResultDto uploadCoursefile();
+
 
     UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath);
 }

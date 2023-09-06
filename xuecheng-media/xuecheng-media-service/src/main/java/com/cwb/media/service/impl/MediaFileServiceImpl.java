@@ -20,6 +20,7 @@ import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,8 @@ public class MediaFileServiceImpl implements MediaFileService {
  @Autowired
  MediaFilesMapper mediaFilesMapper;
  @Autowired
+ MediaFileServiceImpl current;
+ @Autowired
  MinioClient minioClient;
  @Value("${minio.bucket.files}")
  private String bucket_Files;
@@ -72,13 +75,9 @@ public class MediaFileServiceImpl implements MediaFileService {
   return mediaListResult;
 
  }
- @Override
- public UploadFileResultDto uploadCoursefile() {
-  return null;
- }
+
 
  @Override
- @Transactional
  public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
   String filename = uploadFileParamsDto.getFilename();
   String extension = filename.substring(filename.lastIndexOf("."));
@@ -95,7 +94,8 @@ public class MediaFileServiceImpl implements MediaFileService {
   if(!b){
    XcException.cast("文件上传失败");
   }
-  MediaFiles mediaFiles = addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_Files, ObjectName);
+  MediaFiles mediaFiles = current.addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_Files, ObjectName);
+
   UploadFileResultDto uploadFileResultDto = new UploadFileResultDto();
   BeanUtils.copyProperties(mediaFiles, uploadFileResultDto);
   return uploadFileResultDto;
