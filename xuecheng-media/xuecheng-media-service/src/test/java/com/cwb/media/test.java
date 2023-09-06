@@ -1,5 +1,7 @@
 package com.cwb.media;
 
+import com.j256.simplemagic.ContentInfo;
+import com.j256.simplemagic.ContentInfoUtil;
 import io.minio.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -26,21 +28,16 @@ public class test {
 
     @Test
     public void TestUpload() throws Exception{
-        boolean found =
-                minioClient.bucketExists(BucketExistsArgs.builder().bucket("testbucket").build());
-        if (!found) {
-            // Make a new bucket called 'asiatrip'.
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket("testbucket").build());
-        } else {
-            System.out.println("Bucket 'testbucket' already exists.");
-        }
+        ContentInfo extensionMatch = ContentInfoUtil.findExtensionMatch(".mp4");
+        String mimetype="application/octet-stream";
+        if (extensionMatch!=null)
+            mimetype=extensionMatch.getMimeType();
         minioClient.uploadObject(
                 UploadObjectArgs.builder()
                         .bucket("testbucket")
-                        .object("JJP.jpg")
-//                        .object("001/XJP.jpg")
-                        .filename("C:\\Users\\admin\\Pictures\\Saved Pictures\\XJP.jpg")
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                        .object("001/ys.mp4")
+                        .filename("C:\\Users\\admin\\Videos\\原神？启动！.mp4")
+                        .contentType(mimetype)
                         .build());
     }
     @Test
@@ -57,7 +54,7 @@ public class test {
                             .bucket("testbucket")
                             .object("XJP.jpg")
                             .build();
-        minioClient.getObject(args);
+
         FilterInputStream inputStream = minioClient.getObject(args);
         FileOutputStream outputStream = new FileOutputStream(new File("D:\\jjh.jpg"));
         IOUtils.copy(inputStream,outputStream);
