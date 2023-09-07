@@ -30,12 +30,12 @@ public class MediaFilesController {
   MediaFileService mediaFileService;
 
 
- @ApiOperation("媒资列表查询接口")
- @PostMapping("/files")
- public PageResult<MediaFiles> list(PageParams pageParams, @RequestBody(required = false) QueryMediaParamsDto queryMediaParamsDto){
-  Long companyId = 1232141425L;
-  return mediaFileService.queryMediaFiels(companyId,pageParams,queryMediaParamsDto);
- }
+     @ApiOperation("媒资列表查询接口")
+     @PostMapping("/files")
+     public PageResult<MediaFiles> list(PageParams pageParams, @RequestBody(required = false) QueryMediaParamsDto queryMediaParamsDto){
+      Long companyId = 1232141425L;
+      return mediaFileService.queryMediaFiels(companyId,pageParams,queryMediaParamsDto);
+     }
 
     @ApiOperation("上传文件")
     @RequestMapping(value = "/upload/coursefile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -53,8 +53,8 @@ public class MediaFilesController {
          String localFilePath=tempFile.getAbsolutePath();
 
         UploadFileResultDto ret=mediaFileService.uploadFile(companyId,uploadFileParamsDto,localFilePath);
-
          return ret;
     }
+
 
 }

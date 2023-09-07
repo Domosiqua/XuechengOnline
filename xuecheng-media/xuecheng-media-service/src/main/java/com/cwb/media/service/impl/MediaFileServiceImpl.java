@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cwb.base.exception.XcException;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
+import com.cwb.base.model.RestResponse;
 import com.cwb.media.mapper.MediaFilesMapper;
 import com.cwb.media.model.dto.QueryMediaParamsDto;
 import com.cwb.media.model.dto.UploadFileParamsDto;
@@ -14,6 +15,8 @@ import com.cwb.media.service.MediaFileService;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
+import io.minio.GetObjectArgs;
+import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
 import io.minio.errors.*;
@@ -24,13 +27,16 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.MimeType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -102,7 +108,69 @@ public class MediaFileServiceImpl implements MediaFileService {
 
  }
 
- public boolean addFileTobucket (String localFilePath,String mimeType,String bucket, String objectName) throws IOException, ServerException, InsufficientDataException, InternalException, InvalidResponseException, InvalidKeyException, NoSuchAlgorithmException, XmlParserException, ErrorResponseException {
+ @Override
+ public RestResponse<Boolean> checkFile(String fileMd5) {
+  MediaFiles mediaFiles = mediaFilesMapper.selectById(fileMd5);
+  if(mediaFiles==null){
+      return RestResponse.success(false);
+  }else{
+      String filePath=mediaFiles.getFilePath();
+      String bucket = mediaFiles.getBucket();
+      try {
+          InputStream vedio = minioClient.getObject(GetObjectArgs.
+                  builder().
+                  bucket(bucket).
+                  object(filePath).
+                  build());
+          if (vedio!=null)
+              return RestResponse.success(true);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+  }
+
+     return RestResponse.success(false);
+
+ }
+
+ @Override
+ public RestResponse<Boolean> checkChunk(String fileMd5, int chunk) {
+
+         String filePath=getChunkFileFolderPath(fileMd5)+chunk;
+
+         try {
+             InputStream vedio = minioClient.getObject(GetObjectArgs.
+                     builder().
+                     bucket(bucket_vedioFiles).
+                     object(filePath).
+                     build());
+             if (vedio!=null)
+                 return RestResponse.success(true);
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     return RestResponse.success(false);
+ }
+
+
+
+    @Override
+    public RestResponse uploadchunk(String fileMd5, int chunk, String localChunkPath) {
+        String chunkFilePath=getChunkFileFolderPath(fileMd5)+chunk;
+
+        boolean b = addFileTobucket(localChunkPath, getMimeType(null), bucket_vedioFiles, chunkFilePath);
+
+        if (!b) {
+            log.debug("上传分块文件失败:{}", chunkFilePath);
+            return RestResponse.validfail(false, "上传分块失败");
+        }
+        log.debug("上传分块文件成功:{}",chunkFilePath);
+        return RestResponse.success(true);
+
+    }
+
+
+    public boolean addFileTobucket (String localFilePath,String mimeType,String bucket, String objectName) {
   try {
    UploadObjectArgs testbucket = UploadObjectArgs.builder()
            .bucket(bucket)
@@ -151,8 +219,11 @@ public class MediaFileServiceImpl implements MediaFileService {
 
  }
  public String getMimeType(String filename) {
+     String mimetype= MediaType.APPLICATION_OCTET_STREAM_VALUE;
+     if (filename==null)
+         return mimetype;
   ContentInfo extensionMatch = ContentInfoUtil.findExtensionMatch(filename);
-  String mimetype="application/octet-stream";
+
   if (extensionMatch!=null)
     mimetype=extensionMatch.getMimeType();
   return mimetype;
@@ -173,6 +244,9 @@ public class MediaFileServiceImpl implements MediaFileService {
    return null;
   }
  }
+    private String getChunkFileFolderPath(String fileMd5) {
+        return fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/chunk/";
+    }
 
 
 }
