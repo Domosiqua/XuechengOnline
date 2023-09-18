@@ -7,10 +7,12 @@ import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import com.cwb.base.model.RestResponse;
 import com.cwb.media.mapper.MediaFilesMapper;
+import com.cwb.media.mapper.MediaProcessMapper;
 import com.cwb.media.model.dto.QueryMediaParamsDto;
 import com.cwb.media.model.dto.UploadFileParamsDto;
 import com.cwb.media.model.dto.UploadFileResultDto;
 import com.cwb.media.model.po.MediaFiles;
+import com.cwb.media.model.po.MediaProcess;
 import com.cwb.media.service.MediaFileService;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
@@ -57,6 +59,8 @@ public class MediaFileServiceImpl implements MediaFileService {
  MediaFileServiceImpl current;
  @Autowired
  MinioClient minioClient;
+ @Autowired
+ MediaProcessMapper mediaProcessMapper;
  @Value("${minio.bucket.files}")
  private String bucket_Files;
  @Value("${minio.bucket.videofiles}")
@@ -92,12 +96,12 @@ public class MediaFileServiceImpl implements MediaFileService {
   String ObjectName=defaultFolderPath+fileMd5+extension;
   boolean b = false;
   try {
-   b = addFileTobucket(localFilePath, mimeType, bucket_Files, ObjectName);
+        b = addFileTobucket(localFilePath, mimeType, bucket_Files, ObjectName);
   } catch (Exception e) {
-   e.printStackTrace();
+        e.printStackTrace();
   }
   if(!b){
-   XcException.cast("文件上传失败");
+        XcException.cast("文件上传失败");
   }
   MediaFiles mediaFiles = current.addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_Files, ObjectName);
 
@@ -217,6 +221,8 @@ public class MediaFileServiceImpl implements MediaFileService {
         current.addMediaFilesToDb(companyId,fileMd5,uploadFileParamsDto,bucket_vedioFiles,objectname);
         //=====清除分块文件=====
         clearChunkFiles(filePath,chunkTotal);
+
+
         return RestResponse.success(true);
     }
 
@@ -323,11 +329,35 @@ public class MediaFileServiceImpl implements MediaFileService {
     log.error("保存文件信息到数据库失败,{}",mediaFiles.toString());
     XcException.cast("保存文件信息失败");
    }
-   log.debug("保存文件信息到数据库成功,{}",mediaFiles.toString());
+      //添加到待处理任务表
+      addWaitingTask(mediaFiles);
+      log.debug("保存文件信息到数据库成功,{}", mediaFiles.toString());
   }
+
   return mediaFiles;
 
  }
+
+    /**
+     * 添加待处理任务
+     * @param mediaFiles 媒资文件信息
+     */
+
+    private void addWaitingTask(MediaFiles mediaFiles) {
+        String filename = mediaFiles.getFilename();
+        //文件扩展名
+        String extension = filename.substring(filename.lastIndexOf("."));
+        //文件mimeType
+        String mimeType = getMimeType(extension);
+        if (mimeType.equals("video/x-msvideo")){
+            MediaProcess mediaProcess = new MediaProcess();
+            BeanUtils.copyProperties(mediaFiles,mediaProcess);
+            mediaProcess.setFailCount(0);
+            mediaProcess.setStatus("1");
+            mediaProcess.setCreateDate(LocalDateTime.now());
+            mediaProcessMapper.insert(mediaProcess);
+        }
+    }
  public String getMimeType(String filename) {
      String mimetype= MediaType.APPLICATION_OCTET_STREAM_VALUE;
      if (filename==null)
@@ -338,6 +368,7 @@ public class MediaFileServiceImpl implements MediaFileService {
     mimetype=extensionMatch.getMimeType();
   return mimetype;
  }
+
  private String getDefaultFolderPath() {
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   String folder = sdf.format(new Date()).replace("-", "/")+"/";
