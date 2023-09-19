@@ -10,6 +10,8 @@ import com.cwb.media.model.po.MediaFiles;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 /**
  * @description 媒资文件管理业务类
  * @author CWB
@@ -35,9 +37,11 @@ public interface MediaFileService {
 
     RestResponse<Boolean> checkChunk(String fileMd5, int chunk);
 
+    File downloadFileFromMinIO(String bucket, String objectName);
+
+    boolean addFileTobucket (String localFilePath,String mimeType,String bucket, String objectName);
 
     RestResponse uploadchunk(String fileMd5, int chunk, String localChunkPath);
-
 
     RestResponse mergechunks(Long companyId,String fileMd5,int chunkTotal,UploadFileParamsDto uploadFileParamsDto);
 }

@@ -32,7 +32,7 @@ public class BigFilesController {
     @ApiOperation(value = "文件上传前检查文件")
     @PostMapping("/upload/checkfile")
     public RestResponse<Boolean> checkfile(
-            @RequestParam("fileMd5") String fileMd5) throws Exception {
+            @RequestParam("fileMd5") String fileMd5) {
         return mediaFileService.checkFile(fileMd5);
     }
 

@@ -257,6 +257,7 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @param objectName 对象名称
      * @return 下载后的文件
      */
+    @Override
     public File downloadFileFromMinIO(String bucket,String objectName){
         //临时文件
         File minioFile = null;
@@ -285,16 +286,17 @@ public class MediaFileServiceImpl implements MediaFileService {
         return null;
     }
 
-
+    @Override
     public boolean addFileTobucket (String localFilePath,String mimeType,String bucket, String objectName) {
-  try {
-   UploadObjectArgs testbucket = UploadObjectArgs.builder()
+
+        try {
+   UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
            .bucket(bucket)
            .object(objectName)
            .filename(localFilePath)
            .contentType(mimeType)
            .build();
-   minioClient.uploadObject(testbucket);
+   minioClient.uploadObject(uploadObjectArgs);
    log.debug("上传文件到minio成功,bucket:{},objectName:{}",bucket,objectName);
    System.out.println("上传成功");
    return true;
@@ -349,7 +351,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         String extension = filename.substring(filename.lastIndexOf("."));
         //文件mimeType
         String mimeType = getMimeType(extension);
-        if (mimeType.equals("video/x-msvideo")){
+        if (mimeType.equals("video/x-msvideo")){//avi
             MediaProcess mediaProcess = new MediaProcess();
             BeanUtils.copyProperties(mediaFiles,mediaProcess);
             mediaProcess.setFailCount(0);
@@ -358,7 +360,8 @@ public class MediaFileServiceImpl implements MediaFileService {
             mediaProcessMapper.insert(mediaProcess);
         }
     }
- public String getMimeType(String filename) {
+
+ private String getMimeType(String filename) {
      String mimetype= MediaType.APPLICATION_OCTET_STREAM_VALUE;
      if (filename==null)
          return mimetype;
