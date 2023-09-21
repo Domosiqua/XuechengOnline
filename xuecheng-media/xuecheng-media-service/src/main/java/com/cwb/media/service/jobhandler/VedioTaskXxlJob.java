@@ -146,8 +146,11 @@ public class VedioTaskXxlJob {
                     String url = "/" + bucket + "/" + objectName;
                     try {
                         mediaFileService.addFileTobucket(mp4File.getAbsolutePath(), "video/mp4", bucket, objectName);
+
                         //将url存储至数据，并更新状态为成功，并将待处理视频记录删除存入历史
+                        System.out.println("debug~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         mediaFileProcessService.saveProcessFinishStatus(mediaProcess.getId(), "2", fileId, url, null);
+                        System.out.println("debug~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                     } catch (Exception e) {
                         log.error("上传视频失败或入库失败,视频地址:{},错误信息:{}", bucket + objectName, e.getMessage());
                         //最终还是失败了

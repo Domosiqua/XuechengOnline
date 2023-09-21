@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public interface MediaProcessMapper extends BaseMapper<MediaProcess> {
 
-    List<MediaProcess> getAwaitTask(@Param("shardIndex")int shardIndex,@Param("shardTotal") int shardTotal,@Param("shardTotal") int count);
+    List<MediaProcess> getAwaitTask(@Param("shardIndex")int shardIndex,@Param("shardTotal") int shardTotal,@Param("count") int count);
     @Update("update media_process m set m.status='4' where  m.id=#{id} and (m.status='1'or m.status='3') and m.fail_count<3")
     int startTask(@Param("id") Long id);
 

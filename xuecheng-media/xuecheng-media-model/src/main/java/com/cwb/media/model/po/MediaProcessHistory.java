@@ -64,10 +64,10 @@ public class MediaProcessHistory implements Serializable {
      */
     private String errormsg;
 
-    /**
-     * 失败次数
-     */
-    private int failCount;
+//    /**
+//     * 失败次数
+//     */
+//    private int failCount;
 
 
 }
