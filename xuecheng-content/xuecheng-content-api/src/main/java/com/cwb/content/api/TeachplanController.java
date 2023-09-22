@@ -1,7 +1,9 @@
 package com.cwb.content.api;
 
 import com.cwb.content.service.TeachplanService;
+import cwb.content.model.domain.TeachplanMedia;
 import cwb.content.model.dto.SaveTeachplanDto;
+import cwb.content.model.dto.TeachplanBindMediaDto;
 import cwb.content.model.dto.TeachplanDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -61,4 +63,18 @@ public class TeachplanController {
         service.movedown(id);
         return;
     }
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("association/media")
+    public TeachplanMedia BindMedia(@RequestBody TeachplanBindMediaDto teachplanBindMediaDto){
+        TeachplanMedia teachplanMedia = service.BindMedia(teachplanBindMediaDto);
+
+        return teachplanMedia;
+    }
+    @ApiOperation(value = "删除课程计划和媒资信息绑定")
+    @DeleteMapping("association/media/{teachplanid}/{mediaid}")
+    public void DeleteBindMedia(@PathVariable Long teachplanid,@PathVariable String mediaid){
+        service.DeleteBindMedia(teachplanid,mediaid);
+        return;
+    }
+
 }

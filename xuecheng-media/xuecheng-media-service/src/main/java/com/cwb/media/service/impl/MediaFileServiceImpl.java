@@ -75,9 +75,9 @@ public class MediaFileServiceImpl implements MediaFileService {
       String filename=queryMediaParamsDto.getFilename();
       String filetype=queryMediaParamsDto.getFileType();
       String status=queryMediaParamsDto.getAuditStatus();
-      queryWrapper.like(filename!=null,MediaFiles::getFilename,filename);
-      queryWrapper.eq(filetype!=null,MediaFiles::getFileType,filetype);
-      queryWrapper.eq(status!=null,MediaFiles::getAuditStatus,status);
+      queryWrapper.like(filename!=null&&!"".equals(filename),MediaFiles::getFilename,filename);
+      queryWrapper.eq(filetype!=null&&!"".equals(filetype),MediaFiles::getFileType,filetype);
+      queryWrapper.eq(status!=null&&!"".equals(status),MediaFiles::getAuditStatus,status);
   }
   //分页对象
   Page<MediaFiles> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());

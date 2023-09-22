@@ -9,6 +9,7 @@ import cwb.content.model.domain.Teachplan;
 import com.cwb.content.service.TeachplanService;
 import cwb.content.model.domain.TeachplanMedia;
 import cwb.content.model.dto.SaveTeachplanDto;
+import cwb.content.model.dto.TeachplanBindMediaDto;
 import cwb.content.model.dto.TeachplanDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,34 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan
             mapper.updateById(last);
             mapper.updateById(byId);
         }
+    }
+
+    @Override
+    @Transactional
+    public TeachplanMedia BindMedia(TeachplanBindMediaDto teachplanBindMediaDto) {
+        Teachplan teachplan = mapper.selectById(teachplanBindMediaDto.getTeachplanId());
+        if(teachplan==null){
+            XcException.cast("教学计划不存在 请重试");
+            return null;
+        }
+        if(teachplan.getGrade()!=2){
+            XcException.cast("只允许第二级教学计划绑定媒资文件");
+            return null;
+        }
+        mediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId,teachplanBindMediaDto.getTeachplanId()));
+        TeachplanMedia teachplanMedia=new TeachplanMedia();
+        teachplanMedia.setCourseId(teachplan.getCourseId());
+        teachplanMedia.setMediaId(teachplanBindMediaDto.getMediaId());
+        teachplanMedia.setMediaFilename(teachplanBindMediaDto.getFileName());
+        teachplanMedia.setTeachplanId(teachplanBindMediaDto.getTeachplanId());
+        mediaMapper.insert(teachplanMedia);
+        return teachplanMedia;
+    }
+
+    @Override
+    public void DeleteBindMedia(Long teachplanid, String mediaid) {
+        mediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId,teachplanid).eq(TeachplanMedia::getMediaId,mediaid));
+        return;
     }
 
     private int getTeachplanCount(Long courseId, Long parentid) {

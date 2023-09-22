@@ -3,6 +3,7 @@ package cwb.content.model.domain;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -88,13 +89,13 @@ public class Teachplan implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createDate;
+    private LocalDateTime createDate;
 
     /**
      * 修改时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date changeDate;
+    private LocalDateTime changeDate;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -291,19 +292,19 @@ public class Teachplan implements Serializable {
         this.isPreview = isPreview;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getChangeDate() {
+    public LocalDateTime getChangeDate() {
         return changeDate;
     }
 
-    public void setChangeDate(Date changeDate) {
+    public void setChangeDate(LocalDateTime changeDate) {
         this.changeDate = changeDate;
     }
 

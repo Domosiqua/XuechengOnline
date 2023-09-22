@@ -2,7 +2,9 @@ package com.cwb.content.service;
 
 import cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.extension.service.IService;
+import cwb.content.model.domain.TeachplanMedia;
 import cwb.content.model.dto.SaveTeachplanDto;
+import cwb.content.model.dto.TeachplanBindMediaDto;
 import cwb.content.model.dto.TeachplanDto;
 
 import java.util.List;
@@ -18,11 +20,13 @@ public interface TeachplanService extends IService<Teachplan> {
 
     void saveTeachplan(SaveTeachplanDto teachplan);
 
-
-
     void deleteTeachplan(Long id);
 
     void moveup(Long id);
 
     void movedown(Long id);
+
+    TeachplanMedia BindMedia(TeachplanBindMediaDto teachplanBindMediaDto);
+
+    void DeleteBindMedia(Long teachplanid, String mediaid);
 }

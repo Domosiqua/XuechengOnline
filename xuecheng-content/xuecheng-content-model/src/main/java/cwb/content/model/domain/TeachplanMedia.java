@@ -1,10 +1,9 @@
 package cwb.content.model.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 import lombok.ToString;
@@ -46,7 +45,8 @@ public class TeachplanMedia implements Serializable {
     /**
      * 
      */
-    private Date createDate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createDate;
 
     /**
      * 创建人
