@@ -22,7 +22,8 @@ import java.io.IOException;
  * @author CWB
  * @version 1.0
  */
- @Api(value = "媒资文件管理接口",tags = "媒资文件管理接口") @RestController
+ @Api(value = "媒资文件管理接口",tags = "媒资文件管理接口")
+ @RestController
 public class MediaFilesController {
 
 
