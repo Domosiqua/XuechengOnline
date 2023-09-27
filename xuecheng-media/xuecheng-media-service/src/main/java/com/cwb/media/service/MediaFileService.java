@@ -24,7 +24,7 @@ public interface MediaFileService {
   * @param pageParams 分页参数
   * @param queryMediaParamsDto 查询条件
   * @return com.cwb.base.model.PageResult<com.cwb.media.model.po.MediaFiles>
-  * @author Mr.M
+  *
  */
  PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
@@ -44,4 +44,6 @@ public interface MediaFileService {
     RestResponse uploadchunk(String fileMd5, int chunk, String localChunkPath);
 
     RestResponse mergechunks(Long companyId,String fileMd5,int chunkTotal,UploadFileParamsDto uploadFileParamsDto);
+
+    MediaFiles getFileById(String mediaId);
 }

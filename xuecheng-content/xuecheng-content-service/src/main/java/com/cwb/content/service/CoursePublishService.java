@@ -2,6 +2,7 @@ package com.cwb.content.service;
 
 import cwb.content.model.domain.CoursePublish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import cwb.content.model.dto.CoursePreviewDto;
 
 /**
 * @author admin
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CoursePublishService extends IService<CoursePublish> {
 
+    CoursePreviewDto getbasemodel(Long courseId);
 }

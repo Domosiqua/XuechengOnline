@@ -1,5 +1,8 @@
 package com.cwb.content.api;
 
+import com.cwb.content.service.CoursePublishService;
+import cwb.content.model.dto.CoursePreviewDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,14 +11,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.0
  */
 @Controller
-@RequestMapping("/coursepreview")
 public class FreemarkerController {
 
-    @GetMapping("/{courseId}")
+    @Autowired
+    private CoursePublishService coursePublishService;
+
+    @GetMapping("/coursepreview/{courseId}")
     public ModelAndView preview(@PathVariable("courseId") Long courseId){
 
+        CoursePreviewDto model = coursePublishService.getbasemodel(courseId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("model",null);
+        modelAndView.addObject("model",model);
         modelAndView.setViewName("course_template");
         return modelAndView;
     }
