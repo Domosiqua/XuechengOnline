@@ -3,6 +3,7 @@ package cwb.content.model.domain;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -48,7 +49,7 @@ public class CourseTeacher implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

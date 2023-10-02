@@ -24,15 +24,12 @@ import java.util.PrimitiveIterator;
 public class CourseOpenController {
 
     @Autowired
-    private CourseBaseService courseBaseInfoService;
-
-    @Autowired
-    private CoursePublishService coursePublishService;
+    private CourseBaseService courseBaseService;
 
     @GetMapping("/course/whole/{courseId}")
     public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
         //获取课程预览信息
-        CoursePreviewDto coursePreviewInfo = coursePublishService.getbasemodel(courseId);
+        CoursePreviewDto coursePreviewInfo = courseBaseService.getbasemodel(courseId);
         return coursePreviewInfo;
     }
 

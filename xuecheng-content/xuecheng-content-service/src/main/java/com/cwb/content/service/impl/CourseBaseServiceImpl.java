@@ -9,10 +9,7 @@ import com.cwb.base.model.PageResult;
 import com.cwb.content.mapper.*;
 import com.cwb.content.service.CourseBaseService;
 import cwb.content.model.domain.*;
-import cwb.content.model.dto.AddCourseDto;
-import cwb.content.model.dto.CourseBaseInfoDto;
-import cwb.content.model.dto.EditCourseDto;
-import cwb.content.model.dto.QueryCourseParamsDto;
+import cwb.content.model.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +188,6 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         //根据id从课程营销表查询
         CourseMarket courseMarketObj = courseMarketMapper.selectById(courseMarketNew.getId());
         if(courseMarketObj == null){
-
             return courseMarketMapper.insert(courseMarketNew);
         }else {
             BeanUtils.copyProperties(courseMarketNew, courseMarketObj);
@@ -199,6 +195,17 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
             return courseMarketMapper.updateById(courseMarketObj);
         }
     }
+
+    @Override
+    public CoursePreviewDto getbasemodel(Long courseId) {
+        CoursePreviewDto ret=new CoursePreviewDto();
+        List<TeachplanDto> teachplanDtos = teachplanMapper.selectTreeNodes(courseId);
+        ret.setTeachplans(teachplanDtos);
+        CourseBaseInfoDto courseBaseInfo = this.getCourseBaseInfo(courseId);
+        ret.setCourseBase(courseBaseInfo);
+        return ret;
+    }
+
 }
 
 

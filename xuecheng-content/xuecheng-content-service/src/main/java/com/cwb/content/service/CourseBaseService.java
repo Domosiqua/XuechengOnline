@@ -4,10 +4,7 @@ import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import cwb.content.model.domain.CourseBase;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cwb.content.model.dto.AddCourseDto;
-import cwb.content.model.dto.CourseBaseInfoDto;
-import cwb.content.model.dto.EditCourseDto;
-import cwb.content.model.dto.QueryCourseParamsDto;
+import cwb.content.model.dto.*;
 
 /**
 * @author admin
@@ -25,4 +22,6 @@ public interface CourseBaseService extends IService<CourseBase> {
     CourseBaseInfoDto getCourseBaseInfo(Long id);
 
     void deleteCourseByid(Long courseId);
+
+    CoursePreviewDto getbasemodel(Long courseId);
 }
