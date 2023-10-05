@@ -91,7 +91,51 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         //更新课程基本表的审核状态
         courseBase.setAuditStatus("202003");
         courseBaseMapper.updateById(courseBase);
+        return;
+    }
 
+    @Override
+    @Transactional
+    public void publish(Long companyId, Long courseId) {
+        CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+        if (coursePublishPre == null) {
+            XcException.cast("请先提交课程审核，审核通过才可以发布");
+        }
+        if(!coursePublishPre.getCompanyId().equals(companyId)){
+            XcException.cast("不允许提交其它机构的课程。");
+        }
+        String auditStatus = coursePublishPre.getStatus();
+        //审核通过方可发布
+        if(!"202004".equals(auditStatus)){
+            XcException.cast("操作失败，课程审核通过方可发布。");
+        }
+        saveCoursePublish(courseId);
+
+        saveCoursePublishMessage(courseId);
+
+        coursePublishPreMapper.deleteById(courseId);
+
+        return ;
+    }
+
+    private void saveCoursePublishMessage(Long courseId) {
+    }
+
+    private void saveCoursePublish(Long courseId) {
+        CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+        CoursePublish coursePublish=new CoursePublish();
+        BeanUtils.copyProperties(coursePublishPre,coursePublish);
+        coursePublish.setStatus("203002");
+        CoursePublish coursePublish1 = coursePublishMapper.selectById(courseId);
+        if(coursePublish1==null){
+            coursePublishMapper.insert(coursePublish);
+        }else{
+            coursePublishMapper.updateById(coursePublish);
+        }
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        courseBase.setStatus("203002");
+        courseBaseMapper.updateById(courseBase);
+        return ;
     }
 
 }

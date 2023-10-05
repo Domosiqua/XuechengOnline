@@ -1,11 +1,9 @@
 package com.cwb.content.api;
 
 import com.cwb.content.service.CoursePublishService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author CWB
@@ -13,15 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @SuppressWarnings({"all"})
 @RestController
-@RequestMapping("/courseaudit")
 public class CoursePublishController {
 
     @Autowired
     CoursePublishService coursePublishService;
 
-    @PostMapping("/commit/{courseId}")
+    @ApiOperation("课程提交审核")
+    @PostMapping("/courseaudit/commit/{courseId}")
     public void commit(@PathVariable Long courseId){
         Long companyId=1232141425L;
         coursePublishService.commit(courseId,companyId);
+    }
+    @ApiOperation("课程发布")
+    @ResponseBody
+    @PostMapping ("/coursepublish/{courseId}")
+    public void coursepublish(@PathVariable("courseId") Long courseId){
+        Long companyId = 1232141425L;
+        coursePublishService.publish(companyId,courseId);
+
     }
 }

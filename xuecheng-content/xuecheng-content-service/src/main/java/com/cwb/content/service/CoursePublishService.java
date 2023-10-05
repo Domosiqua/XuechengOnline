@@ -11,4 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CoursePublishService extends IService<CoursePublish> {
 
     void commit(Long courseId, Long companyid);
+
+    void publish(Long companyId, Long courseId);
 }
