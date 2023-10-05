@@ -8,6 +8,7 @@ import com.cwb.content.mapper.*;
 import com.cwb.content.service.CourseBaseService;
 import com.cwb.content.service.CourseTeacherService;
 import com.cwb.content.service.TeachplanService;
+import com.cwb.messagesdk.service.MqMessageService;
 import cwb.content.model.domain.*;
 import com.cwb.content.service.CoursePublishService;
 import cwb.content.model.dto.CourseBaseInfoDto;
@@ -44,6 +45,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
     CourseTeacherService courseTeacherService;
     @Autowired
     CoursePublishPreMapper coursePublishPreMapper;
+    @Autowired
+    MqMessageService mqMessageService;
 
 
     @Override
@@ -119,6 +122,7 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
     }
 
     private void saveCoursePublishMessage(Long courseId) {
+        mqMessageService.addMessage("course_publish",String.valueOf(courseId),null,null);
     }
 
     private void saveCoursePublish(Long courseId) {

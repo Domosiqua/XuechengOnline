@@ -1,10 +1,9 @@
 package cwb.content.model.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -109,17 +108,18 @@ public class CoursePublish implements Serializable {
     /**
      * 发布时间
      */
-    private Date createDate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createDate;
 
     /**
      * 上架时间
      */
-    private Date onlineDate;
+    private LocalDateTime onlineDate;
 
     /**
      * 下架时间
      */
-    private Date offlineDate;
+    private LocalDateTime offlineDate;
 
     /**
      * 发布状态
