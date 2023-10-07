@@ -43,7 +43,7 @@ public abstract class MessageProcessAbstract {
      * @author Mr.M
      * @date 2022/9/21 20:35
     */
-    public void process(int shardIndex, int shardTotal,  String messageType,int count,long timeout) {
+    public void process(int shardIndex, int shardTotal, String messageType,int count,long timeout) {
 
         try {
             //扫描消息表获取任务清单

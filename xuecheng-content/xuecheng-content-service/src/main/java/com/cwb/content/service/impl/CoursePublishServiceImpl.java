@@ -3,11 +3,13 @@ package com.cwb.content.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cwb.base.exception.CommonError;
 import com.cwb.base.exception.XcException;
 import com.cwb.content.mapper.*;
 import com.cwb.content.service.CourseBaseService;
 import com.cwb.content.service.CourseTeacherService;
 import com.cwb.content.service.TeachplanService;
+import com.cwb.messagesdk.model.po.MqMessage;
 import com.cwb.messagesdk.service.MqMessageService;
 import cwb.content.model.domain.*;
 import com.cwb.content.service.CoursePublishService;
@@ -122,7 +124,12 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
     }
 
     private void saveCoursePublishMessage(Long courseId) {
-        mqMessageService.addMessage("course_publish",String.valueOf(courseId),null,null);
+        MqMessage course_publish = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
+
+        if (course_publish==null){
+            XcException.cast(CommonError.UNKOWN_ERROR);
+        }
+        return;
     }
 
     private void saveCoursePublish(Long courseId) {
