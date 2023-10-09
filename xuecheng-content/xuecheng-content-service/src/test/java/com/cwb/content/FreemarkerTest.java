@@ -36,7 +36,7 @@ public class FreemarkerTest {
     @Test
     public void testGenerateHtmlByTemplate() throws IOException, TemplateException {
 
-//        FreeMarkerTemplateUtils.processTemplateIntoString()
+
 
         //配置freemarker
         Configuration configuration = new Configuration(Configuration.getVersion());
@@ -63,7 +63,7 @@ public class FreemarkerTest {
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
         System.out.println(content);
         //将静态化内容输出到文件中
-        InputStream inputStream = IOUtils.toInputStream(content);
+        InputStream inputStream = IOUtils.toInputStream(content,"utf-8");
         //输出流
         FileOutputStream outputStream = new FileOutputStream("D:\\XC\\test.html");
         IOUtils.copy(inputStream, outputStream);

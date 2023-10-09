@@ -1,13 +1,18 @@
 package com.cwb.content.service.jobhandler;
 
+import com.cwb.content.feignClient.MediaServiceClient;
+import com.cwb.content.service.CoursePublishService;
 import com.cwb.messagesdk.model.po.MqMessage;
 import com.cwb.messagesdk.service.MessageProcessAbstract;
 import com.cwb.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import cwb.content.model.domain.CoursePublish;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 public class CoursePublishTask extends MessageProcessAbstract {
 
 
+
+    @Autowired
+    CoursePublishService coursePublishService;
 
     public static final String Message_type="course_publish";
 
@@ -67,6 +75,11 @@ public class CoursePublishTask extends MessageProcessAbstract {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        File file = coursePublishService.generateCourseHtml(courseId);
+        coursePublishService.uploadCourseHtml(courseId,file);
+
+
         //保存第一阶段状态
         mqMessageService.completedStageOne(id);
 

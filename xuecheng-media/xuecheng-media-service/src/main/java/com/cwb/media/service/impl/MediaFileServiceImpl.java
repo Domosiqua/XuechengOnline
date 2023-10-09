@@ -6,6 +6,7 @@ import com.cwb.base.exception.XcException;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import com.cwb.base.model.RestResponse;
+import com.cwb.base.utils.StringUtil;
 import com.cwb.media.mapper.MediaFilesMapper;
 import com.cwb.media.mapper.MediaProcessMapper;
 import com.cwb.media.model.dto.QueryMediaParamsDto;
@@ -16,28 +17,20 @@ import com.cwb.media.model.po.MediaProcess;
 import com.cwb.media.service.MediaFileService;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import io.minio.*;
-import io.minio.errors.*;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.activation.MimeType;
 import java.io.*;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -93,25 +86,34 @@ public class MediaFileServiceImpl implements MediaFileService {
 
  }
 
-
+    /**
+     *
+     * @param companyId
+     * @param uploadFileParamsDto
+     * @param localFilePath 本地路径
+     * @param objectName 如果传入objectname 则上传到该目录
+     * @return
+     */
  @Override
- public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+ public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath, String objectName) {
   String filename = uploadFileParamsDto.getFilename();
   String extension = filename.substring(filename.lastIndexOf("."));
   String mimeType = getMimeType(extension);
-  String defaultFolderPath = getDefaultFolderPath();
   String fileMd5 = getFileMd5(new File(localFilePath));
-  String ObjectName=defaultFolderPath+fileMd5+extension;
+  if (StringUtil.isEmpty(objectName)){
+      String defaultFolderPath = getDefaultFolderPath();
+      objectName=defaultFolderPath+fileMd5+extension;
+  }
   boolean b = false;
   try {
-        b = addFileTobucket(localFilePath, mimeType, bucket_Files, ObjectName);
+        b = addFileTobucket(localFilePath, mimeType, bucket_Files, objectName);
   } catch (Exception e) {
         e.printStackTrace();
   }
   if(!b){
         XcException.cast("文件上传失败");
   }
-  MediaFiles mediaFiles = current.addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_Files, ObjectName);
+  MediaFiles mediaFiles = current.addMediaFilesToDb(companyId, fileMd5, uploadFileParamsDto, bucket_Files, objectName);
 
   UploadFileResultDto uploadFileResultDto = new UploadFileResultDto();
   BeanUtils.copyProperties(mediaFiles, uploadFileResultDto);
@@ -385,6 +387,9 @@ public class MediaFileServiceImpl implements MediaFileService {
   return mimetype;
  }
 
+    /**
+     * @return 2023/8/8/
+     */
  private String getDefaultFolderPath() {
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   String folder = sdf.format(new Date()).replace("-", "/")+"/";

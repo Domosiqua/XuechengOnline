@@ -7,8 +7,6 @@ import com.cwb.media.model.dto.QueryMediaParamsDto;
 import com.cwb.media.model.dto.UploadFileParamsDto;
 import com.cwb.media.model.dto.UploadFileResultDto;
 import com.cwb.media.model.po.MediaFiles;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
@@ -31,7 +29,7 @@ public interface MediaFileService {
 
 
 
-    UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath);
+    UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath, String objectName);
 
     RestResponse<Boolean> checkFile(String fileMd5);
 

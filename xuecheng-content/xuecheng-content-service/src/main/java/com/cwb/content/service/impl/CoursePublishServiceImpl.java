@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.base.exception.CommonError;
 import com.cwb.base.exception.XcException;
+import com.cwb.content.config.MultipartSupportConfig;
+import com.cwb.content.feignClient.MediaServiceClient;
 import com.cwb.content.mapper.*;
 import com.cwb.content.service.CourseBaseService;
 import com.cwb.content.service.CourseTeacherService;
@@ -14,14 +16,29 @@ import com.cwb.messagesdk.service.MqMessageService;
 import cwb.content.model.domain.*;
 import com.cwb.content.service.CoursePublishService;
 import cwb.content.model.dto.CourseBaseInfoDto;
+import cwb.content.model.dto.CoursePreviewDto;
 import cwb.content.model.dto.TeachplanDto;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author admin
@@ -29,6 +46,7 @@ import java.util.List;
 * @createDate 2023-08-08 19:03:42
 */
 @Service
+@Slf4j
 public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, CoursePublish>
     implements CoursePublishService{
     @Autowired
@@ -49,6 +67,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
     CoursePublishPreMapper coursePublishPreMapper;
     @Autowired
     MqMessageService mqMessageService;
+    @Autowired
+    MediaServiceClient mediaServiceClient;
 
 
     @Override
@@ -123,6 +143,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         return ;
     }
 
+
+
     private void saveCoursePublishMessage(Long courseId) {
         MqMessage course_publish = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
 
@@ -147,6 +169,68 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         courseBase.setStatus("203002");
         courseBaseMapper.updateById(courseBase);
         return ;
+    }
+
+    @Override
+    public File generateCourseHtml(Long courseId){
+
+        //配置freemarker
+        Configuration configuration = new Configuration(Configuration.getVersion());
+
+        //加载模板
+        //选指定模板路径,classpath下templates下
+        //得到classpath路径
+        File htmlFile=null;
+        try {
+            String classpath = this.getClass().getResource("/").getPath();
+            configuration.setDirectoryForTemplateLoading(new File(classpath + "/templates/"));
+            //设置字符编码
+            configuration.setDefaultEncoding("utf-8");
+
+            //指定模板文件名称
+            Template template = configuration.getTemplate("course_template.ftl");
+
+            //准备数据
+            CoursePreviewDto coursePreviewInfo = courseBaseService.getbasemodel(courseId);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("model", coursePreviewInfo);
+
+            //静态化
+            //参数1：模板，参数2：数据模型
+            String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+            System.out.println(content);
+            //将静态化内容输出到文件中
+            InputStream inputStream = IOUtils.toInputStream(content,"utf-8");
+            //输出流
+            htmlFile=File.createTempFile(courseId.toString(),".html");
+            FileOutputStream outputStream = new FileOutputStream(htmlFile);
+            IOUtils.copy(inputStream, outputStream);
+        } catch (Exception e) {
+            log.error("页面静态化出现问题 课程ID: {}",courseId);
+            e.printStackTrace();
+        }
+        return htmlFile;
+    }
+
+
+
+    @Override
+    public void uploadCourseHtml(Long courseId, File file) {
+
+        try {
+            MultipartFile multipartFile = MultipartSupportConfig.getMultipartFile(file);
+            String upload = mediaServiceClient.upload(multipartFile, "course/" + courseId + ".html");
+
+            if (StringUtils.isEmpty(upload)){
+                log.error("上传失败 走降级逻辑得到NULL 课程id:{}",courseId);
+                XcException.cast("上传静态资源过程出现问题");
+            }
+        } catch (IOException e) {
+            log.error("上传失败 课程id:{}",courseId);
+            e.printStackTrace();
+            XcException.cast("上传静态资源过程出现问题");
+        }
     }
 
 }
