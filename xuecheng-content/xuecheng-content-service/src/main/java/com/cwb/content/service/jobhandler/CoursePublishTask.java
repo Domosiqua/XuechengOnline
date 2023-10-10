@@ -1,6 +1,9 @@
 package com.cwb.content.service.jobhandler;
 
+import com.cwb.content.feignClient.CourseIndex;
 import com.cwb.content.feignClient.MediaServiceClient;
+import com.cwb.content.feignClient.SearchServiceClient;
+import com.cwb.content.service.CourseBaseService;
 import com.cwb.content.service.CoursePublishService;
 import com.cwb.messagesdk.model.po.MqMessage;
 import com.cwb.messagesdk.service.MessageProcessAbstract;
@@ -8,7 +11,9 @@ import com.cwb.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import cwb.content.model.domain.CoursePublish;
+import cwb.content.model.dto.CourseBaseInfoDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +33,9 @@ public class CoursePublishTask extends MessageProcessAbstract {
 
     @Autowired
     CoursePublishService coursePublishService;
+
+    @Autowired
+    SearchServiceClient searchServiceClient;
 
     public static final String Message_type="course_publish";
 
@@ -101,6 +109,14 @@ public class CoursePublishTask extends MessageProcessAbstract {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        CoursePublish coursePublish = coursePublishService.getById(courseId);
+
+
+        CourseIndex courseindex=new CourseIndex();
+        BeanUtils.copyProperties(coursePublish,courseindex);
+        searchServiceClient.add(courseindex);
+
         mqMessageService.completedStageTwo(id);
 
     }
@@ -119,6 +135,8 @@ public class CoursePublishTask extends MessageProcessAbstract {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+
         mqMessageService.completedStageThree(id);
     }
 

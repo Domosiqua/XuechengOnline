@@ -2,6 +2,7 @@ package com.cwb.content.service;
 
 import cwb.content.model.domain.CoursePublish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import cwb.content.model.dto.CoursePreviewDto;
 
 import java.io.File;
 
@@ -19,4 +20,6 @@ public interface CoursePublishService extends IService<CoursePublish> {
     File generateCourseHtml(Long courseId);
 
     void uploadCourseHtml(Long courseId,File file);
+
+
 }

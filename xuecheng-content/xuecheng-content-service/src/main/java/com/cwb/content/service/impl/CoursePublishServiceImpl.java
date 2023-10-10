@@ -203,7 +203,7 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
             //将静态化内容输出到文件中
             InputStream inputStream = IOUtils.toInputStream(content,"utf-8");
             //输出流
-            htmlFile=File.createTempFile(courseId.toString(),".html");
+            htmlFile=File.createTempFile(courseId.toString()+"my_temp_file_prefix",".html");
             FileOutputStream outputStream = new FileOutputStream(htmlFile);
             IOUtils.copy(inputStream, outputStream);
         } catch (Exception e) {
@@ -232,6 +232,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
             XcException.cast("上传静态资源过程出现问题");
         }
     }
+
+
 
 }
 
