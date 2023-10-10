@@ -6,10 +6,7 @@ import com.cwb.base.model.PageResult;
 import com.cwb.content.service.CourseMarketService;
 import cwb.content.model.domain.CourseBase;
 import cwb.content.model.domain.CourseMarket;
-import cwb.content.model.dto.AddCourseDto;
-import cwb.content.model.dto.CourseBaseInfoDto;
-import cwb.content.model.dto.EditCourseDto;
-import cwb.content.model.dto.QueryCourseParamsDto;
+import cwb.content.model.dto.*;
 import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +26,12 @@ public class CourseBaseInfoController {
     CourseBaseService service;
     @Autowired
     CourseMarketService marketService;
+    @GetMapping("/whole/{courseId}")
+    public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
+        //获取课程预览信息
+        CoursePreviewDto coursePreviewInfo = service.getbasemodel(courseId);
+        return coursePreviewInfo;
+    }
 
     @ApiOperation("课程查询接口")
     @PostMapping("/list")

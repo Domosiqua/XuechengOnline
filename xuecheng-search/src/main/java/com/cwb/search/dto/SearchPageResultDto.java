@@ -1,6 +1,8 @@
 package com.cwb.search.dto;
 
 import com.cwb.base.model.PageResult;
+
+
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,10 +11,10 @@ import java.util.List;
 /**
  * @author Mr.M
  * @version 1.0
- * @description TODO
+ *
  * @date 2022/9/25 17:51
  */
-@Data
+
 @ToString
 public class SearchPageResultDto<T> extends PageResult {
 
