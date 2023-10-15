@@ -4,6 +4,7 @@ import com.cwb.base.exception.ValidationGroups;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import com.cwb.content.service.CourseMarketService;
+import com.cwb.content.util.SecurityUtil;
 import cwb.content.model.domain.CourseBase;
 import cwb.content.model.domain.CourseMarket;
 import cwb.content.model.dto.*;
@@ -37,7 +38,9 @@ public class CourseBaseInfoController {
     @ApiOperation("课程查询接口")
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams){
-
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        System.out.println(user);
         PageResult<CourseBase> pageResult=service.getPageConditionList(pageParams,queryCourseParams);
         return pageResult;
     }

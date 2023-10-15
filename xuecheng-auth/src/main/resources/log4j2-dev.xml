@@ -40,6 +40,10 @@
         </logger>
         <logger name="org.mybatis" level="INFO">
         </logger>
+        <logger name="com.alibaba.nacos.naming.beat.sender.NacosRestTemplate" level="OFF" >
+        </logger>
+        <logger name="com.alibaba.nacos.naming.beat.sender.NamingProxy" level="OFF" >
+        </logger>
         <logger name="cn.itcast.wanxinp2p.consumer.mapper" level="DEBUG">
         </logger>
 
