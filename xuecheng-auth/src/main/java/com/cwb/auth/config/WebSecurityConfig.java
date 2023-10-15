@@ -2,8 +2,8 @@ package com.cwb.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,6 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()//其它请求全部放行
                 .and()
                 .formLogin().successForwardUrl("/login-success");//登录成功跳转到/login-success
+    }
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
 

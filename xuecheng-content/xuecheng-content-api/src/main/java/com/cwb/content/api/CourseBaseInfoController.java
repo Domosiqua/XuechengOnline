@@ -11,6 +11,7 @@ import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class CourseBaseInfoController {
     @ApiOperation("课程查询接口")
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams){
+
         PageResult<CourseBase> pageResult=service.getPageConditionList(pageParams,queryCourseParams);
         return pageResult;
     }

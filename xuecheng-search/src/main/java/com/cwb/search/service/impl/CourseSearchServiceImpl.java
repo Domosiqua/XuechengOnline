@@ -151,9 +151,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
             }
             courseIndex.setId(id);
             courseIndex.setName(name);
-
             list.add(courseIndex);
-
         }
         SearchPageResultDto<CourseIndex> pageResult = new SearchPageResultDto<>(list, totalHits.value,pageNo,pageSize);
 

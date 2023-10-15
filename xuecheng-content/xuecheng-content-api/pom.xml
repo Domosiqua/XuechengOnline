@@ -18,6 +18,14 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.cwb</groupId>
             <artifactId>xuecheng-content-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
