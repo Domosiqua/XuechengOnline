@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: checkcode
+  cloud:
+    nacos:
+      server-addr: 192.168.88.128:8848
+      discovery:
+        namespace: ${spring.profiles.active}
+        group: xuecheng-project
+      config:
+        namespace: ${spring.profiles.active}
+        group: xuecheng-project
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: xuecheng-common
+            refresh: true
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: xuecheng-common
+            refresh: true
+          - data-id: redis-${spring.profiles.active}.yaml
+            group: xuecheng-common
+            refresh: true
+  profiles:
+    active: dev
