@@ -50,18 +50,26 @@ public class UserServiceImpl implements UserDetailsService {
         String authType = authParamsDto.getAuthType();
         AuthService authService = applicationContext.getBean(authType + "_authService", AuthService.class);
         XcUserExt execute = authService.execute(authParamsDto);
-
-        String username= authParamsDto.getUsername();
-        XcUser user = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, username));
-        if (user==null){
-            return null;
-        }
-        String password=user.getPassword();
+        UserDetails userDetails = getUserPrincipal(execute);
+        return userDetails;
+    }
+    /**
+     * @description 查询用户信息
+     * @param user  用户id，主键
+     * @return com.xuecheng.ucenter.model.po.XcUser 用户信息
+     * @author Mr.M
+     * @date 2022/9/29 12:19
+     */
+    public UserDetails getUserPrincipal(XcUserExt user){
+        //用户权限,如果不加报Cannot pass a null GrantedAuthority collection
+        String[] authorities = {"p1"};
+        String password = user.getPassword();
+        //为了安全在令牌中不放密码
         user.setPassword(null);
         //将user对象转json
         String userString = JSON.toJSONString(user);
-        String[] authorities={"test"};
-        UserDetails userDetails = User.withUsername(userString).password(password).authorities(authorities).build();
+        //创建UserDetails对象
+        UserDetails userDetails = User.withUsername(userString).password(password ).authorities(authorities).build();
         return userDetails;
     }
 }

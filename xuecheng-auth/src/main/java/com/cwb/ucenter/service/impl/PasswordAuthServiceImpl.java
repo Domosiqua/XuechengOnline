@@ -6,6 +6,7 @@ import com.cwb.ucenter.model.dto.AuthParamsDto;
 import com.cwb.ucenter.model.dto.XcUserExt;
 import com.cwb.ucenter.model.po.XcUser;
 import com.cwb.ucenter.service.AuthService;
+import com.cwb.ucenter.service.feignclient.CheckCodeClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,17 @@ public class PasswordAuthServiceImpl implements AuthService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    CheckCodeClient checkCodeClient;
+
 
     @Override
     public XcUserExt execute(AuthParamsDto authParamsDto) {
 
+        Boolean verify = checkCodeClient.verify(authParamsDto.getCheckcodekey(), authParamsDto.getCheckcode());
+        if(!verify){
+            throw new RuntimeException("验证码错误");
+        }
         //账号
         String username = authParamsDto.getUsername();
         XcUser user = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, username));
@@ -49,4 +57,5 @@ public class PasswordAuthServiceImpl implements AuthService {
         }
         return xcUserExt;
     }
+
 }
