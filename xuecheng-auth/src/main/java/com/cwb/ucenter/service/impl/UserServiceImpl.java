@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserDetailsService {
     /**
      * @description 查询用户信息
      * @param user  用户id，主键
-     * @return com.xuecheng.ucenter.model.po.XcUser 用户信息
+     * @return com.cwb.ucenter.model.po.XcUser 用户信息
      * @author Mr.M
      * @date 2022/9/29 12:19
      */

@@ -18,8 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoAuthenticationProviderCustom extends DaoAuthenticationProvider {
 
-    @Autowired
-    UserDetailsService userDetailsService;
+
 
     @Autowired
     public void setUserDetailsService(UserDetailsService userDetailsService) {

@@ -122,7 +122,9 @@ public class WxAuthServiceImpl implements AuthService , WxAuthService {
         ResponseEntity<String> exchange = restTemplate.exchange(wxUrl, HttpMethod.POST, null, String.class);
 
         //防止乱码进行转码
-        String result = new     String(exchange.getBody().getBytes(StandardCharsets.ISO_8859_1),StandardCharsets.UTF_8);
+        String result = new String(exchange.getBody().getBytes(StandardCharsets.ISO_8859_1),StandardCharsets.UTF_8);
+        log.info("调用微信接口申请access_token: 返回值:{}", result);
+        log.info("调用微信接口申请access_token: 返回值:{}", result);
         log.info("调用微信接口申请access_token: 返回值:{}", result);
         Map<String,String> resultMap = JSON.parseObject(result, Map.class);
 
@@ -167,7 +169,6 @@ public class WxAuthServiceImpl implements AuthService , WxAuthService {
         xcUser.setPassword(unionid);
         xcUser.setUtype("101001");//学生类型
         xcUser.setStatus("1");//用户状态
-        xcUser.setCreateTime(LocalDateTime.now());
         xcUserMapper.insert(xcUser);
         XcUserRole xcUserRole = new XcUserRole();
         xcUserRole.setId(UUID.randomUUID().toString());
