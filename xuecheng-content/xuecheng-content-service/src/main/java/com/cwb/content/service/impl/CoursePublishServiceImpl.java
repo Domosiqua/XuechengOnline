@@ -199,7 +199,7 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
             //静态化
             //参数1：模板，参数2：数据模型
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-            System.out.println(content);
+//            System.out.println(content);
             //将静态化内容输出到文件中
             InputStream inputStream = IOUtils.toInputStream(content,"utf-8");
             //输出流

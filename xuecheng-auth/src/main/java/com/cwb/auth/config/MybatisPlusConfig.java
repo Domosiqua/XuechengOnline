@@ -38,8 +38,8 @@ public class MybatisPlusConfig {
 
 		@Override
 		public void insertFill(MetaObject metaObject) {
-			this.setFieldValByName("createDate", LocalDateTime.now(), metaObject);
-			this.setFieldValByName("changeDate", LocalDateTime.now(), metaObject);
+			this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
+			this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
 		}
 
 		@Override

@@ -1,5 +1,7 @@
 package com.cwb.ucenter.model.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -24,7 +26,7 @@ public class XcPermission implements Serializable {
     private String roleId;
 
     private String menuId;
-
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
 

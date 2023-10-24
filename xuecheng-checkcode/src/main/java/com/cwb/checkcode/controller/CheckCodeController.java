@@ -30,6 +30,14 @@ public class CheckCodeController {
     public CheckCodeResultDto generatePicCheckCode(CheckCodeParamsDto checkCodeParamsDto){
         return picCheckCodeService.generate(checkCodeParamsDto);
     }
+    @PostMapping(value = "/phone")
+
+    public CheckCodeResultDto phoneRegisterCheckCode(@RequestParam("param1") String param1){
+        CheckCodeParamsDto checkCodeParamsDto=new CheckCodeParamsDto();
+        checkCodeParamsDto.setCheckCodeType("sms");
+        checkCodeParamsDto.setParam1(param1);
+        return picCheckCodeService.generate(checkCodeParamsDto);
+    }
 
     @ApiOperation(value="校验", notes="校验")
     @ApiImplicitParams({

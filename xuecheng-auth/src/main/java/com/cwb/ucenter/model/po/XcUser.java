@@ -29,6 +29,7 @@ public class XcUser implements Serializable {
 
     private String salt;
 
+
     private String name;
     private String nickname;
     private String wxUnionid;

@@ -13,7 +13,7 @@ import cwb.content.model.dto.*;
 */
 public interface CourseBaseService extends IService<CourseBase> {
 
-    PageResult<CourseBase> getPageConditionList(PageParams pageParams, QueryCourseParamsDto queryCourseParams);
+    PageResult<CourseBase> getPageConditionList(Long CompanyId,PageParams pageParams, QueryCourseParamsDto queryCourseParams);
 
     CourseBaseInfoDto createCourseBase(Long companyid,AddCourseDto addCourseDto);
 

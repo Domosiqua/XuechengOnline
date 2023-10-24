@@ -1,5 +1,6 @@
 package com.cwb.ucenter.model.dto;
 
+import com.cwb.ucenter.model.po.XcUser;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -12,11 +13,8 @@ import java.util.Map;
  * @date 2022/9/29 10:56
  */
 @Data
-public class AuthParamsDto {
-
-    private String username; //用户名
-    private String password; //域  用于扩展
-    private String cellphone;//手机号
+public class AuthParamsDto extends XcUser {
+    private String confirmpwd;
     private String checkcode;//验证码
     private String checkcodekey;//验证码key
     private String authType; // 认证的类型   password:用户名密码模式类型    sms:短信模式类型

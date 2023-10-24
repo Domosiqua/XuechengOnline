@@ -10,8 +10,10 @@ import cwb.content.model.domain.CourseMarket;
 import cwb.content.model.dto.*;
 import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,18 +38,31 @@ public class CourseBaseInfoController {
     }
 
     @ApiOperation("课程查询接口")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SecurityUtil.XcUser user = SecurityUtil.getUser();
         System.out.println(user);
-        PageResult<CourseBase> pageResult=service.getPageConditionList(pageParams,queryCourseParams);
+        String companyId=user.getCompanyId();
+        PageResult<CourseBase> pageResult;
+        if(StringUtils.isNotEmpty(companyId))
+            pageResult=service.getPageConditionList(Long.parseLong(companyId),pageParams,queryCourseParams);
+        else
+            pageResult=service.getPageConditionList(0L,pageParams,queryCourseParams);
         return pageResult;
     }
     @ApiOperation("新增课程信息")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_add')")
     @PostMapping
     public CourseBaseInfoDto createCourse(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto){
         Long companyId = 1232141425L;
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        String companyId1 = user.getCompanyId();
+        if (StringUtils.isNotEmpty(companyId1))
+            companyId=Long.parseLong(companyId1);
+        else
+            companyId=0L;
         CourseBaseInfoDto ret = service.createCourseBase(companyId,addCourseDto);
         return ret;
     }
