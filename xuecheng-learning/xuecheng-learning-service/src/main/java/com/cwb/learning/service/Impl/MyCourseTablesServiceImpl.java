@@ -52,7 +52,7 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             chooseCourse = myCourseTablesService.addFreeCoruse(userid, coursepublish);
             myCourseTablesService.addCourseTabls(chooseCourse);
         }else{
-            myCourseTablesService.addChargeCoruse(userid, coursepublish);
+            chooseCourse = myCourseTablesService.addChargeCoruse(userid, coursepublish);
         }
         XcChooseCourseDto xcChooseCourseDto=new XcChooseCourseDto();
         BeanUtils.copyProperties(chooseCourse,xcChooseCourseDto);
@@ -110,9 +110,7 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
         xcChooseCourse.setUserId(userId);
         xcChooseCourse.setCompanyId(coursepublish.getCompanyId());
         xcChooseCourse.setOrderType("700002");//收费课程
-        xcChooseCourse.setCreateDate(LocalDateTime.now());
         xcChooseCourse.setStatus("701002");//待支付
-
         xcChooseCourse.setValidDays(coursepublish.getValidDays());
         xcChooseCourse.setValidtimeStart(LocalDateTime.now());
         xcChooseCourse.setValidtimeEnd(LocalDateTime.now().plusDays(coursepublish.getValidDays()));

@@ -134,7 +134,7 @@ public class CoursePublishPre implements Serializable {
     /**
      * 现价
      */
-    private Double price;
+    private Float price;
 
     /**
      * 原价

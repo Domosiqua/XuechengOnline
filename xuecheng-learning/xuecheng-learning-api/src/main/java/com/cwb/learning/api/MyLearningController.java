@@ -23,7 +23,7 @@ public class MyLearningController {
     @GetMapping("/open/learn/getvideo/{courseId}/{teachplanId}/{mediaId}")
     public RestResponse<String> getvideo(@PathVariable("courseId") Long courseId, @PathVariable("courseId") Long teachplanId, @PathVariable("mediaId") String mediaId) {
 
-        return RestResponse.success("video/"+mediaId.charAt(0)+"/"+mediaId.charAt(1)+"/"+mediaId);
+        return RestResponse.success("video/"+mediaId.charAt(0)+"/"+mediaId.charAt(1)+"/"+mediaId+"/"+mediaId+".mp4");
 
     }
 

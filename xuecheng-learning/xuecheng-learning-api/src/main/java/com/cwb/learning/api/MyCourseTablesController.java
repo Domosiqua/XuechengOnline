@@ -42,7 +42,7 @@ public class MyCourseTablesController {
         if(user==null)
             XcException.cast("请登陆");
         String id = user.getId();
-        XcChooseCourseDto xcChooseCourseDto = myCourseTablesService.addChooseCourse(id, courseId);
+         XcChooseCourseDto xcChooseCourseDto = myCourseTablesService.addChooseCourse(id, courseId);
         return xcChooseCourseDto;
     }
 
