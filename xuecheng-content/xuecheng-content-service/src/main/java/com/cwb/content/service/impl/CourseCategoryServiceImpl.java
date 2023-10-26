@@ -1,11 +1,10 @@
 package com.cwb.content.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cwb.content.model.domain.CourseCategory;
+import com.cwb.content.model.domain.CourseCategory;
 import com.cwb.content.service.CourseCategoryService;
 import com.cwb.content.mapper.CourseCategoryMapper;
-import cwb.content.model.dto.CourseCategoryTreeDto;
+import com.cwb.content.model.dto.CourseCategoryTreeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,7 @@
 package com.cwb.content.api;
 
 import com.cwb.content.service.CourseBaseService;
-import com.cwb.content.service.CoursePublishService;
-import cwb.content.model.dto.CoursePreviewDto;
+import com.cwb.content.model.dto.CoursePreviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

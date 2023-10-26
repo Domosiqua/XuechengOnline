@@ -2,9 +2,9 @@ package com.cwb.content.service;
 
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
-import cwb.content.model.domain.CourseBase;
+import com.cwb.content.model.domain.CourseBase;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cwb.content.model.dto.*;
+import com.cwb.content.model.dto.*;
 
 /**
 * @author admin
@@ -15,9 +15,9 @@ public interface CourseBaseService extends IService<CourseBase> {
 
     PageResult<CourseBase> getPageConditionList(Long CompanyId,PageParams pageParams, QueryCourseParamsDto queryCourseParams);
 
-    CourseBaseInfoDto createCourseBase(Long companyid,AddCourseDto addCourseDto);
+    CourseBaseInfoDto createCourseBase(Long companyid, AddCourseDto addCourseDto);
 
-    CourseBaseInfoDto updateCourse(Long companyId,EditCourseDto addCourseDto);
+    CourseBaseInfoDto updateCourse(Long companyId, EditCourseDto addCourseDto);
 
     CourseBaseInfoDto getCourseBaseInfo(Long id);
 

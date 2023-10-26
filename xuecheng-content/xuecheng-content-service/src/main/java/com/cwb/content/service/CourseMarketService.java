@@ -1,6 +1,6 @@
 package com.cwb.content.service;
 
-import cwb.content.model.domain.CourseMarket;
+import com.cwb.content.model.domain.CourseMarket;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -2,7 +2,7 @@ package com.cwb.content.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.content.mapper.CourseTeacherMapper;
-import cwb.content.model.domain.CourseTeacher;
+import com.cwb.content.model.domain.CourseTeacher;
 import com.cwb.content.service.CourseTeacherService;
 import org.springframework.stereotype.Service;
 

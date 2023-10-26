@@ -1,11 +1,11 @@
 package com.cwb.content.service;
 
-import cwb.content.model.domain.Teachplan;
+import com.cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cwb.content.model.domain.TeachplanMedia;
-import cwb.content.model.dto.SaveTeachplanDto;
-import cwb.content.model.dto.TeachplanBindMediaDto;
-import cwb.content.model.dto.TeachplanDto;
+import com.cwb.content.model.domain.TeachplanMedia;
+import com.cwb.content.model.dto.SaveTeachplanDto;
+import com.cwb.content.model.dto.TeachplanBindMediaDto;
+import com.cwb.content.model.dto.TeachplanDto;
 
 import java.util.List;
 

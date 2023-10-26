@@ -1,6 +1,6 @@
 package com.cwb.content.mapper;
 
-import cwb.content.model.domain.TeachplanWork;
+import com.cwb.content.model.domain.TeachplanWork;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

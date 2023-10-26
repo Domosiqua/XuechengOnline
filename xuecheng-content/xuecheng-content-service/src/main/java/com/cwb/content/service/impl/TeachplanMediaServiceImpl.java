@@ -2,7 +2,7 @@ package com.cwb.content.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.content.mapper.TeachplanMediaMapper;
-import cwb.content.model.domain.TeachplanMedia;
+import com.cwb.content.model.domain.TeachplanMedia;
 import com.cwb.content.service.TeachplanMediaService;
 import org.springframework.stereotype.Service;
 

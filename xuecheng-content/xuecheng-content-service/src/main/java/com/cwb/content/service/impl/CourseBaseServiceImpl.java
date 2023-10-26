@@ -7,9 +7,9 @@ import com.cwb.base.exception.XcException;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
 import com.cwb.content.mapper.*;
+import com.cwb.content.model.domain.*;
+import com.cwb.content.model.dto.*;
 import com.cwb.content.service.CourseBaseService;
-import cwb.content.model.domain.*;
-import cwb.content.model.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
 
     @Override
     @Transactional
-    public CourseBaseInfoDto createCourseBase(Long companyId,AddCourseDto dto) {
+    public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto dto) {
 
         //新增对象
         CourseBase courseBaseNew = new CourseBase();
@@ -110,7 +110,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
 
     @Override
     @Transactional
-    public CourseBaseInfoDto updateCourse(Long companyId,EditCourseDto dto) {
+    public CourseBaseInfoDto updateCourse(Long companyId, EditCourseDto dto) {
         Long courseId = dto.getId();
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         if(courseBase==null){

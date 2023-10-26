@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cwb.content.mapper.TeachplanMapper">
 
-    <resultMap id="BaseResultMap" type="cwb.content.model.domain.Teachplan">
+    <resultMap id="BaseResultMap" type="com.cwb.content.model.domain.Teachplan">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="pname" column="pname" jdbcType="VARCHAR"/>
             <result property="parentid" column="parentid" jdbcType="BIGINT"/>
@@ -32,7 +32,7 @@
         change_date
     </sql>
 
-    <resultMap id="treeNodeResultMap" type="cwb.content.model.dto.TeachplanDto">
+    <resultMap id="treeNodeResultMap" type="com.cwb.content.model.dto.TeachplanDto">
         <!-- 一级数据映射 -->
         <id     column="one_id"        property="id" />
         <result column="one_pname"      property="pname" />
@@ -46,7 +46,7 @@
         <result column="one_coursePubId"   property="coursePubId" />
 
         <!-- 一级中包含多个二级数据 -->
-        <collection property="teachPlanTreeNodes" ofType="cwb.content.model.dto.TeachplanDto">
+        <collection property="teachPlanTreeNodes" ofType="com.cwb.content.model.dto.TeachplanDto">
             <!-- 二级数据映射 -->
             <id     column="two_id"        property="id" />
             <result column="two_pname"      property="pname" />
@@ -58,7 +58,7 @@
             <result column="two_orderby"   property="orderby" />
             <result column="two_courseId"   property="courseId" />
             <result column="two_coursePubId"   property="coursePubId" />
-            <association property="teachplanMedia" javaType="cwb.content.model.domain.TeachplanMedia">
+            <association property="teachplanMedia" javaType="com.cwb.content.model.domain.TeachplanMedia">
                 <result column="teachplanMeidaId"   property="id" />
                 <!--suppress MybatisXMapperXmlInspection -->
                 <result column="mediaFilename"  property="mediaFilename" />
@@ -107,10 +107,10 @@
         order by one.orderby,
                  two.orderby
     </select>
-    <select id="getlast" resultType="cwb.content.model.domain.Teachplan" >
+    <select id="getlast" resultType="com.cwb.content.model.domain.Teachplan" >
         SELECT * FROM teachplan WHERE orderby &lt; #{orderby} and course_id=#{courseId} AND parentid=#{parentid} ORDER BY orderby DESC LIMIT 1
     </select>
-    <select id="getnext" resultType="cwb.content.model.domain.Teachplan" >
+    <select id="getnext" resultType="com.cwb.content.model.domain.Teachplan" >
         SELECT * FROM teachplan WHERE orderby &gt; #{orderby} and course_id=#{courseId} AND parentid=#{parentid} ORDER BY orderby ASC LIMIT 1
     </select>
     <select id="getMaxOrderby" resultType="java.lang.Integer">

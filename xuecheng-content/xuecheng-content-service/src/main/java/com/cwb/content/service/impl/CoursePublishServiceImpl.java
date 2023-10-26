@@ -8,25 +8,23 @@ import com.cwb.base.exception.XcException;
 import com.cwb.content.config.MultipartSupportConfig;
 import com.cwb.content.feignClient.MediaServiceClient;
 import com.cwb.content.mapper.*;
+import com.cwb.content.model.domain.*;
 import com.cwb.content.service.CourseBaseService;
 import com.cwb.content.service.CourseTeacherService;
 import com.cwb.content.service.TeachplanService;
 import com.cwb.messagesdk.model.po.MqMessage;
 import com.cwb.messagesdk.service.MqMessageService;
-import cwb.content.model.domain.*;
 import com.cwb.content.service.CoursePublishService;
-import cwb.content.model.dto.CourseBaseInfoDto;
-import cwb.content.model.dto.CoursePreviewDto;
-import cwb.content.model.dto.TeachplanDto;
+import com.cwb.content.model.dto.CourseBaseInfoDto;
+import com.cwb.content.model.dto.CoursePreviewDto;
+import com.cwb.content.model.dto.TeachplanDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -116,6 +114,7 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         //更新课程基本表的审核状态
         courseBase.setAuditStatus("202003");
         courseBaseMapper.updateById(courseBase);
+        saveCoursePublishMessage("course_audit",courseId);
         return;
     }
 
@@ -136,7 +135,7 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         }
         saveCoursePublish(courseId);
 
-        saveCoursePublishMessage(courseId);
+        saveCoursePublishMessage("course_publish",courseId);
 
         coursePublishPreMapper.deleteById(courseId);
 
@@ -145,8 +144,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
 
 
 
-    private void saveCoursePublishMessage(Long courseId) {
-        MqMessage course_publish = mqMessageService.addMessage("course_publish", String.valueOf(courseId), null, null);
+    private void saveCoursePublishMessage(String type,Long courseId) {
+        MqMessage course_publish = mqMessageService.addMessage(type, String.valueOf(courseId), null, null);
 
         if (course_publish==null){
             XcException.cast(CommonError.UNKOWN_ERROR);

@@ -2,9 +2,8 @@ package com.cwb.content.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cwb.content.service.CourseTeacherService;
-import cwb.content.model.domain.CourseTeacher;
+import com.cwb.content.model.domain.CourseTeacher;
 import io.swagger.annotations.ApiOperation;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

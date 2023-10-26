@@ -1,7 +1,7 @@
 package com.cwb.content.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cwb.content.model.domain.TeachplanWork;
+import com.cwb.content.model.domain.TeachplanWork;
 import com.cwb.content.service.TeachplanWorkService;
 import com.cwb.content.mapper.TeachplanWorkMapper;
 import org.springframework.stereotype.Service;

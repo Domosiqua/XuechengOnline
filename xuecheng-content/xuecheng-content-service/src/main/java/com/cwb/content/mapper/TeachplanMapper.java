@@ -1,9 +1,8 @@
 package com.cwb.content.mapper;
 
-import cwb.content.model.domain.Teachplan;
+import com.cwb.content.model.domain.Teachplan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import cwb.content.model.dto.TeachplanDto;
-import org.apache.ibatis.annotations.Insert;
+import com.cwb.content.model.dto.TeachplanDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;

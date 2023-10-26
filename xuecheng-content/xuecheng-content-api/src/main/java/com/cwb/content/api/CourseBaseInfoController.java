@@ -3,20 +3,19 @@ package com.cwb.content.api;
 import com.cwb.base.exception.ValidationGroups;
 import com.cwb.base.model.PageParams;
 import com.cwb.base.model.PageResult;
+import com.cwb.content.model.dto.*;
 import com.cwb.content.service.CourseMarketService;
 import com.cwb.content.util.SecurityUtil;
-import cwb.content.model.domain.CourseBase;
-import cwb.content.model.domain.CourseMarket;
-import cwb.content.model.dto.*;
+import com.cwb.content.model.domain.CourseBase;
 import com.cwb.content.service.CourseBaseService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Security;
 
 /**
  * @author CWB
@@ -41,9 +40,8 @@ public class CourseBaseInfoController {
     @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams){
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        System.out.println(user);
+
         String companyId=user.getCompanyId();
         PageResult<CourseBase> pageResult;
         if(StringUtils.isNotEmpty(companyId))
@@ -56,13 +54,10 @@ public class CourseBaseInfoController {
     @PreAuthorize("hasAuthority('xc_teachmanager_course_add')")
     @PostMapping
     public CourseBaseInfoDto createCourse(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto){
-        Long companyId = 1232141425L;
-        SecurityUtil.XcUser user = SecurityUtil.getUser();
-        String companyId1 = user.getCompanyId();
-        if (StringUtils.isNotEmpty(companyId1))
-            companyId=Long.parseLong(companyId1);
-        else
+        Long companyId = SecurityUtil.getUserCompanyID();
+        if (companyId==null)
             companyId=0L;
+
         CourseBaseInfoDto ret = service.createCourseBase(companyId,addCourseDto);
         return ret;
     }
@@ -75,7 +70,8 @@ public class CourseBaseInfoController {
     @ApiOperation("修改课程信息")
     @PutMapping
     public CourseBaseInfoDto updateCourse(@RequestBody @Validated(ValidationGroups.Update.class) EditCourseDto dto){
-        Long companyId = 1232141425L;
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        Long companyId = Long.parseLong(user.getCompanyId());
         CourseBaseInfoDto ret = service.updateCourse(companyId,dto);
         return ret;
     }

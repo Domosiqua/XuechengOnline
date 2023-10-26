@@ -1,7 +1,6 @@
 package com.cwb.content.mapper;
 
-import com.sun.tracing.dtrace.ModuleAttributes;
-import cwb.content.model.domain.CoursePublishPre;
+import com.cwb.content.model.domain.CoursePublishPre;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;

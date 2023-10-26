@@ -3,7 +3,7 @@ package com.cwb.content.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cwb.content.mapper.CourseAuditMapper;
 import com.cwb.content.service.CourseAuditService;
-import cwb.content.model.domain.CourseAudit;
+import com.cwb.content.model.domain.CourseAudit;
 import org.springframework.stereotype.Service;
 
 /**

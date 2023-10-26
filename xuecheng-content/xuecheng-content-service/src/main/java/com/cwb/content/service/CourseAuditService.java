@@ -1,7 +1,7 @@
 package com.cwb.content.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import cwb.content.model.domain.CourseAudit;
+import com.cwb.content.model.domain.CourseAudit;
 
 
 /**

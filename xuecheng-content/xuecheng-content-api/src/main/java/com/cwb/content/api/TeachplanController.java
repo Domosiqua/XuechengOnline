@@ -1,14 +1,13 @@
 package com.cwb.content.api;
 
 import com.cwb.content.service.TeachplanService;
-import cwb.content.model.domain.TeachplanMedia;
-import cwb.content.model.dto.SaveTeachplanDto;
-import cwb.content.model.dto.TeachplanBindMediaDto;
-import cwb.content.model.dto.TeachplanDto;
+import com.cwb.content.model.domain.TeachplanMedia;
+import com.cwb.content.model.dto.SaveTeachplanDto;
+import com.cwb.content.model.dto.TeachplanBindMediaDto;
+import com.cwb.content.model.dto.TeachplanDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

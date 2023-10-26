@@ -1,8 +1,7 @@
 package com.cwb.content.api;
 
 import com.cwb.content.service.CourseCategoryService;
-import cwb.content.model.domain.CourseCategory;
-import cwb.content.model.dto.CourseCategoryTreeDto;
+import com.cwb.content.model.dto.CourseCategoryTreeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

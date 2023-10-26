@@ -1,10 +1,7 @@
 package com.cwb.content;
 
-import com.cwb.content.mapper.TeachplanMapper;
 import com.cwb.content.service.CourseBaseService;
-import com.cwb.content.service.CoursePublishService;
-import cwb.content.model.domain.TeachplanMedia;
-import cwb.content.model.dto.CoursePreviewDto;
+import com.cwb.content.model.dto.CoursePreviewDto;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

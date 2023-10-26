@@ -1,8 +1,8 @@
 package com.cwb.content.service;
 
-import cwb.content.model.domain.CourseCategory;
+import com.cwb.content.model.domain.CourseCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cwb.content.model.dto.CourseCategoryTreeDto;
+import com.cwb.content.model.dto.CourseCategoryTreeDto;
 
 import java.util.List;
 

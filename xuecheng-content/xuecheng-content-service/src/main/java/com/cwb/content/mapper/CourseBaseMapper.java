@@ -1,8 +1,8 @@
 package com.cwb.content.mapper;
 
-import cwb.content.model.domain.CourseBase;
+import com.cwb.content.model.domain.CourseBase;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import cwb.content.model.dto.CourseCategoryTreeDto;
+import com.cwb.content.model.dto.CourseCategoryTreeDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
