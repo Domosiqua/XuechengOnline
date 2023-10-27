@@ -33,6 +33,18 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.7.73.ALL</version>
+        </dependency>
+
+        <!-- 支付宝SDK依赖的日志 -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
 
         <!-- Spring Boot 的 Spring Web MVC 集成 -->
         <dependency>
