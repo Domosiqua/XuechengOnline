@@ -4,6 +4,7 @@ import com.cwb.orders.model.dto.AddOrderDto;
 import com.cwb.orders.model.dto.PayRecordDto;
 import com.cwb.orders.model.dto.PayStatusDto;
 import com.cwb.orders.model.po.XcPayRecord;
+import com.cwb.messagesdk.model.po.MqMessage;
 
 /**
  * @author CWB
@@ -21,4 +22,6 @@ public interface OrdersService {
     PayStatusDto queryPayResultFromAlipay(String payNo);
 
     void saveAliPayStatus(PayStatusDto payStatusDto);
+
+    void notifyPayResult(MqMessage message);
 }

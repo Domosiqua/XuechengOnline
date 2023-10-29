@@ -11,8 +11,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cwb.base.exception.XcException;
 import com.cwb.base.utils.IdWorkerUtils;
 import com.cwb.base.utils.QRCodeUtil;
+import com.cwb.messagesdk.model.po.MqMessage;
+import com.cwb.messagesdk.service.MqMessageService;
 import com.cwb.orders.Service.OrdersService;
 import com.cwb.orders.config.AlipayConfig;
+import com.cwb.orders.config.PayNotifyConfig;
 import com.cwb.orders.mapper.XcOrdersGoodsMapper;
 import com.cwb.orders.mapper.XcOrdersMapper;
 import com.cwb.orders.mapper.XcPayRecordMapper;
@@ -23,6 +26,12 @@ import com.cwb.orders.model.po.XcOrders;
 import com.cwb.orders.model.po.XcOrdersGoods;
 import com.cwb.orders.model.po.XcPayRecord;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,13 +39,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author CWB
  * @version 1.0
- * @Date 2023/10/27 21:10
+ * @Datetime 2023/10/27 21:10
  */
 @Service
 @Slf4j
@@ -51,16 +62,17 @@ public class OrdersServiceImpl implements OrdersService {
     XcPayRecordMapper xcPayRecordMapper;
     @Autowired
     OrdersService currentProxy;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+    @Autowired
+    MqMessageService mqMessageService;
 
     @Value("${pay.alipay.APP_ID}")
     String APP_ID;
     @Value("${pay.alipay.APP_PRIVATE_KEY}")
     String APP_PRIVATE_KEY;
-
     @Value("${pay.alipay.ALIPAY_PUBLIC_KEY}")
     String ALIPAY_PUBLIC_KEY;
-
-
     @Value("${pay.qrcodeurl}")
     String qrcodeurl;
 
@@ -170,7 +182,8 @@ public class OrdersServiceImpl implements OrdersService {
             return payRecordDto;
         }
         PayStatusDto payStatusDto = queryPayResultFromAlipay(payNo);
-        currentProxy.saveAliPayStatus( payStatusDto);
+        currentProxy.saveAliPayStatus(payStatusDto);
+
         //重新查询支付记录
         payRecord = getPayRecordByPayno(payNo);
         PayRecordDto payRecordDto = new PayRecordDto();
@@ -216,12 +229,75 @@ public class OrdersServiceImpl implements OrdersService {
         payStatusDto.setTrade_no(trade_no);
         payStatusDto.setTotal_amount(total_amount);
         return payStatusDto;
+    }
+
+    @Override
+    @Transactional
+    public void saveAliPayStatus(PayStatusDto payStatusDto) {
+        String payno = payStatusDto.getOut_trade_no();
+        XcPayRecord payRecordByPayno = getPayRecordByPayno(payno);
+        if (payRecordByPayno==null) {
+            XcException.cast("无相关支付记录");
+        }
+        Long orderId = payRecordByPayno.getOrderId();
+        XcOrders xcOrders = xcOrdersMapper.selectById(orderId);
+        if (xcOrders==null)
+            XcException.cast("找不到相关订单");
+        String status = payRecordByPayno.getStatus();
+        if ("601002".equals(status)){//已经支付
+            return ;
+        }
+        String trade_status = payStatusDto.getTrade_status();
+        if (trade_status.equals("TRADE_SUCCESS")){
+            payRecordByPayno.setStatus("601002");
+            payRecordByPayno.setOutPayNo(payStatusDto.getTrade_no());
+            payRecordByPayno.setPaySuccessTime(LocalDateTime.now());
+            payRecordByPayno.setOutPayChannel("603002");
+            xcPayRecordMapper.updateById(payRecordByPayno);
+            xcOrders.setStatus("600002");
+            xcOrdersMapper.updateById(xcOrders);
+
+            MqMessage payresult_notify = mqMessageService.addMessage("payresult_notify", xcOrders.getOutBusinessId(), xcOrders.getOrderType(), null);
+            notifyPayResult(payresult_notify);
+        }
 
 
     }
 
     @Override
-    public void saveAliPayStatus(PayStatusDto payStatusDto) {
+    public void notifyPayResult(MqMessage message) {
+
+        //1、消息体，转json
+        String msg = JSON.toJSONString(message);
+        //设置消息持久化
+        Message msgObj = MessageBuilder.withBody(msg.getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                .build();
+        // 2.全局唯一的消息ID，需要封装到CorrelationData中
+        CorrelationData correlationData = new CorrelationData(message.getId().toString());
+        // 3.添加callback
+        correlationData.getFuture().addCallback(
+                result -> {
+                    if(result.isAck()){
+                        // 3.1.ack，消息成功
+                        log.debug("通知支付结果消息发送成功, ID:{}", correlationData.getId());
+                        //删除消息表中的记录
+                        mqMessageService.completed(message.getId());
+                    }else{
+                        // 3.2.nack，消息失败
+                        log.error("通知支付结果消息发送失败, ID:{}, 原因{}",correlationData.getId(), result.getReason());
+                    }
+                },
+                ex -> log.error("消息发送异常, ID:{}, 原因{}",correlationData.getId(),ex.getMessage())
+        );
+        // 发送消息
+        rabbitTemplate.convertAndSend(PayNotifyConfig.PAYNOTIFY_EXCHANGE_FANOUT, "", msgObj,correlationData);
 
     }
+
+
+
+
+
+
 }

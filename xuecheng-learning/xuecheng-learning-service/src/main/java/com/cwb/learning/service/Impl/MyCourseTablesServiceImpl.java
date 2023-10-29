@@ -12,6 +12,7 @@ import com.cwb.learning.model.dto.XcCourseTablesDto;
 import com.cwb.learning.model.po.XcChooseCourse;
 import com.cwb.learning.model.po.XcCourseTables;
 import com.cwb.learning.service.MyCourseTablesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import java.util.List;
  * @version 1.0
  * @Date 2023/10/25 17:13
  */
+@Slf4j
 @Service
 public class MyCourseTablesServiceImpl implements MyCourseTablesService {
 
@@ -181,5 +183,30 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             return xcCourseTablesDto;
         }
 
+    }
+
+    @Override
+    @Transactional
+    public boolean saveChooseCourseStauts(String choosecourseId) {
+        XcChooseCourse xcChooseCourse = xcChooseCourseMapper.selectById(choosecourseId);
+        if (xcChooseCourse==null){
+            log.debug("接收到购买课程的消息,但找不到选课记录{}",choosecourseId);
+            return false;
+        }
+        String status = xcChooseCourse.getStatus();
+        if ("701002".equals(status)){//待支付
+            xcChooseCourse.setStatus("701001");
+            int i = xcChooseCourseMapper.updateById(xcChooseCourse);
+            if(i<1){
+                log.debug("添加选课记录失败{}",xcChooseCourse);
+                XcException.cast("添加选课记录失败");
+            }
+            addCourseTabls(xcChooseCourse);
+        }
+
+
+
+
+        return true;
     }
 }

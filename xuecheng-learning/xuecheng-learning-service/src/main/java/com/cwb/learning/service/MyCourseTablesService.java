@@ -29,4 +29,6 @@ public interface MyCourseTablesService {
     XcChooseCourse addChargeCoruse(String userId,CoursePublish coursepublish);
 
     XcCourseTablesDto getLearnStatus(String userId, Long CourseId);
+
+    boolean saveChooseCourseStauts(String choosecourseId);
 }
