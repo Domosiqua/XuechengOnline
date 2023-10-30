@@ -13,7 +13,7 @@ import lombok.ToString;
  @ToString
 public class MyCourseTableParams {
 
-     String userId;
+   String userId;
 
    //课程类型  [{"code":"700001","desc":"免费课程"},{"code":"700002","desc":"收费课程"}]
    private String courseType;

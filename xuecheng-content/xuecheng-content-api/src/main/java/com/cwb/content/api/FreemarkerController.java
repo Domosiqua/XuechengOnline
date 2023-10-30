@@ -16,6 +16,7 @@ public class FreemarkerController {
     @Autowired
     private CourseBaseService courseBaseService;
 
+
     @GetMapping("/coursepreview/{courseId}")
     public ModelAndView preview(@PathVariable("courseId") Long courseId){
 

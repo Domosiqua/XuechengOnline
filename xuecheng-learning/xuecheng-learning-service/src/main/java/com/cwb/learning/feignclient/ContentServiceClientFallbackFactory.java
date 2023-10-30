@@ -1,6 +1,7 @@
 package com.cwb.learning.feignclient;
 
 import com.cwb.content.model.domain.CoursePublish;
+import com.cwb.content.model.dto.CoursePreviewDto;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class ContentServiceClientFallbackFactory implements FallbackFactory<Cont
                 log.error("调用内容管理服务发生熔断:{}", throwable.toString(),throwable);
                 return null;
             }
+
         };
     }
 }

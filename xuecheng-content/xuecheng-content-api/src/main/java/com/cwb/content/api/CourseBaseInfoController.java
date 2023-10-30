@@ -29,13 +29,6 @@ public class CourseBaseInfoController {
     CourseBaseService service;
     @Autowired
     CourseMarketService marketService;
-    @GetMapping("/whole/{courseId}")
-    public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
-        //获取课程预览信息
-        CoursePreviewDto coursePreviewInfo = service.getbasemodel(courseId);
-        return coursePreviewInfo;
-    }
-
     @ApiOperation("课程查询接口")
     @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")
     @PostMapping("/list")
@@ -75,7 +68,7 @@ public class CourseBaseInfoController {
         CourseBaseInfoDto ret = service.updateCourse(companyId,dto);
         return ret;
     }
-    @ApiOperation("修改课程信息")
+    @ApiOperation("删除课程")
     @DeleteMapping("/{courseId}")
     public void deleteCourse(@PathVariable Long courseId){
        service.deleteCourseByid(courseId);

@@ -2,11 +2,14 @@ package com.cwb.learning.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cwb.base.exception.XcException;
+import com.cwb.base.model.PageResult;
 import com.cwb.content.model.domain.CoursePublish;
 import com.cwb.learning.feignclient.ContentServiceClient;
 import com.cwb.learning.mapper.XcChooseCourseMapper;
 import com.cwb.learning.mapper.XcCourseTablesMapper;
+import com.cwb.learning.model.dto.MyCourseTableParams;
 import com.cwb.learning.model.dto.XcChooseCourseDto;
 import com.cwb.learning.model.dto.XcCourseTablesDto;
 import com.cwb.learning.model.po.XcChooseCourse;
@@ -202,11 +205,31 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
                 XcException.cast("添加选课记录失败");
             }
             addCourseTabls(xcChooseCourse);
+            return true;
         }
+        return false;
+    }
 
+    @Override
+    public PageResult<XcCourseTables> getMyCourseTable(MyCourseTableParams params) {
+        //页码
+        long pageNo = params.getPage();
+        //每页记录数,固定为4
+        long pageSize = 4;
+        //分页条件
+        Page<XcCourseTables> page = new Page<>(pageNo, pageSize);
+        //根据用户id查询
+        String userId = params.getUserId();
+        LambdaQueryWrapper<XcCourseTables> lambdaQueryWrapper
+                = new LambdaQueryWrapper<XcCourseTables>()
+                  .eq(XcCourseTables::getUserId, userId);
 
-
-
-        return true;
+        //分页查询
+        Page<XcCourseTables> pageResult = xcCourseTablesMapper.selectPage(page, lambdaQueryWrapper);
+        List<XcCourseTables> records = pageResult.getRecords();
+        //记录总数
+        long total = pageResult.getTotal();
+        PageResult<XcCourseTables> courseTablesResult = new PageResult<>(records, total, pageNo, pageSize);
+        return courseTablesResult;
     }
 }

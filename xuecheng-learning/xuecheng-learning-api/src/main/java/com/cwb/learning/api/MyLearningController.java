@@ -1,9 +1,15 @@
 package com.cwb.learning.api;
 
+import com.cwb.base.exception.XcException;
 import com.cwb.base.model.RestResponse;
+import com.cwb.learning.model.dto.XcCourseTablesDto;
+import com.cwb.learning.service.LearningService;
+import com.cwb.learning.service.MyCourseTablesService;
+import com.cwb.learning.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +24,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MyLearningController {
 
+    @Autowired
+    MyCourseTablesService myCourseTablesService;
+    @Autowired
+    LearningService learningService;
+
 
     @ApiOperation("获取视频")
     @GetMapping("/open/learn/getvideo/{courseId}/{teachplanId}/{mediaId}")
-    public RestResponse<String> getvideo(@PathVariable("courseId") Long courseId, @PathVariable("courseId") Long teachplanId, @PathVariable("mediaId") String mediaId) {
+    public RestResponse<String> getvideo(@PathVariable("courseId") Long courseId, @PathVariable("teachplanId") Long teachplanId, @PathVariable("mediaId") String mediaId) {
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        String userId = null;
+        if(user != null){
+            userId = user.getId();
+        }
+        RestResponse<String> video = learningService.getVideo(userId, courseId, teachplanId, mediaId);
 
-        return RestResponse.success("/video/"+mediaId.charAt(0)+"/"+mediaId.charAt(1)+"/"+mediaId+"/"+mediaId+".mp4");
+
+
+        return video;
 
     }
 

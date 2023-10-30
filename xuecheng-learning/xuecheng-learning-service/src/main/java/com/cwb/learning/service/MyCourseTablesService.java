@@ -1,6 +1,8 @@
 package com.cwb.learning.service;
 
+import com.cwb.base.model.PageResult;
 import com.cwb.content.model.domain.CoursePublish;
+import com.cwb.learning.model.dto.MyCourseTableParams;
 import com.cwb.learning.model.dto.XcChooseCourseDto;
 import com.cwb.learning.model.dto.XcCourseTablesDto;
 import com.cwb.learning.model.po.XcChooseCourse;
@@ -31,4 +33,6 @@ public interface MyCourseTablesService {
     XcCourseTablesDto getLearnStatus(String userId, Long CourseId);
 
     boolean saveChooseCourseStauts(String choosecourseId);
+
+    PageResult<XcCourseTables> getMyCourseTable(MyCourseTableParams params);
 }
